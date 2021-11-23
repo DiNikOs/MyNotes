@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MyNotes</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="prompt_title">Заголовок</string>
+    <string name="prompt_text">Текст</string>
+    <string name="prompt_btn">Save</string>
+    <string name="msg_success">Сохранение выполнено успешно</string>
+    <string name="msg_not_success">Сохранение не выполнено</string>
+    <string name="msg_data_blank">Данные не заполнены</string>
+    <string name="msg_error_save_text">Нe удалось сохранить тект</string>
+
+</resources>
