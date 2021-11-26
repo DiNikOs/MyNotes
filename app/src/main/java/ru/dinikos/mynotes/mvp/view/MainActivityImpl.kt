@@ -23,12 +23,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         init()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        startPresent = null
-    }
-
-    override fun init() {
+    private fun init() {
         startPresent = StartPresenter(this)
         saveText.also{
             it.setOnClickListener {
@@ -37,7 +32,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         }
     }
 
-    override fun destroy() {
+    override fun onDestroy() {
+        super.onDestroy()
         startPresent = null
     }
 
