@@ -1,13 +1,33 @@
 <resources>
     <string name="app_name">MyNotes</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
+    <!-- Strings used for MainActivity -->
     <string name="prompt_title">Заголовок</string>
     <string name="prompt_text">Текст</string>
-    <string name="prompt_btn">Save</string>
+    <string name="prompt_save_btn">Save</string>
+    <string name="prompt_go_about_btn">About</string>
+    <string name="prompt_back_btn">Back</string>
+
     <string name="msg_success">Сохранение выполнено успешно. Заголовок</string>
     <string name="msg_not_success">Сохранение не выполнено</string>
     <string name="msg_data_blank">Данные не заполнены</string>
     <string name="msg_error_save_text">Нe удалось сохранить тект</string>
+    <string name="msg_on_create">onCreate</string>
+    <string name="msg_on_start">onStart</string>
+    <string name="msg_on_resume">onResume</string>
+    <string name="msg_on_pause">onPause</string>
+    <string name="msg_on_stop">onStop</string>
+    <string name="msg_on_destroy">onDestroy</string>
+
+    <string name="msg_shareData">Intent shareData</string>
+    <string name="msg_openAbout">Intent openAbout</string>
+    <string name="msg_backToMain">Intent mainActivity</string>
+
+    <!--Strings used for for Share Btn-->
+    <string name="prompt_share_btn">Share</string>
+
+    <!-- Strings used for AboutActivity -->
+    <string name="about_text">MyNote v1.0</string>
+    <string name="about_back_btn"><![CDATA[<]]> Back</string>
 
 </resources>

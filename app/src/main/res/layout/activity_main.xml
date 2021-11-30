@@ -11,14 +11,42 @@
     tools:context=".mvp.view.MainActivityImpl">
 
     <Button
-        android:id="@+id/saveText"
+        android:id="@+id/saveTextBtn"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/btn_marginTop"
-        android:layout_marginBottom="@dimen/btn_marginBottom"
-        android:text="@string/prompt_btn"
+        android:layout_marginBottom="@dimen/btn_save_marginBottom"
+        android:text="@string/prompt_save_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <Button
+        android:id="@+id/shareDataBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/btn_marginTop"
+        android:layout_marginBottom="@dimen/btn_share_marginBottom"
+        android:text="@string/prompt_share_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <Button
+        android:id="@+id/goAboutBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/btn_marginTop"
+        android:layout_marginBottom="@dimen/btn_about_marginBottom"
+        android:text="@string/prompt_go_about_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
