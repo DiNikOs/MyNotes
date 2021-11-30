@@ -22,7 +22,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     /**
      * Вызов при первом создании Activity
      *
-     * @param savedInstanceState
+     * @param savedInstanceState - контекст для работы с Activity(ключ-значение)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,8 +103,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     /**
      * Действие при успешном сохранении
      *
-     * @param title
-     * @param text
+     * @param title - заголовок заметки
+     * @param text - тест заметки
      */
     override fun onSaveSuccess(title: String, text: String) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
@@ -114,7 +114,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     /**
      * Действие при не успешном сохранении
      *
-     * @param text
+     * @param text - текст с описанием где ошибка
      */
     override fun onSaveError(text: String) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_not_success) + " title:" + text)
@@ -124,7 +124,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     /**
      * Действие при попытке сохранения пустой заметки
      *
-     * @param text
+     * @param text - текст с описанием где ошибка
      */
     override fun onAttemptSaveBlankText(text: String) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_error_save_text))
@@ -134,8 +134,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     /**
      * Отправка данных в другие сервисы
      *
-     * @param title
-     * @param text
+     * @param title - заголовок заметки
+     * @param text - тест заметки
      */
     override fun shareData(title: String, text: String) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_shareData) + " title:" + title)
@@ -153,8 +153,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     /**
      * Показ тоаста
      *
-     * @param msg
-     * @param text
+     * @param msg - сообщение формируемое по событию
+     * @param text - текст с результатом события
      */
     private fun showToast(msg: String, text: String) =
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()

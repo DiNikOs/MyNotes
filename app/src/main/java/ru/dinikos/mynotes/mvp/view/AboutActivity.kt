@@ -13,6 +13,11 @@ class AboutActivity : AppCompatActivity(), DefaultView  {
 
     private var defaultPresenter: DefaultPresenter? = null
 
+    /**
+     * Вызов при первом создании AboutActivity
+     *
+     * @param savedInstanceState - контекст для работы с Activity(ключ-значение)
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
