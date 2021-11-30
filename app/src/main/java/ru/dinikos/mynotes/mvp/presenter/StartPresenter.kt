@@ -7,8 +7,8 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
     /**
      * Попытка сохраниния заметки
      *
-     * @param title - заголовок заметки
-     * @param text - тест заметки
+     * @param title  заголовок заметки
+     * @param text  тест заметки
      */
     override fun toSaveText(title: String, text: String) {
         var textError: String = dataIsEmpty(title, text)
@@ -19,8 +19,8 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
     /**
      * Успешное действие с заметкой
      *
-     * @param title - заголовок заметки
-     * @param text - тест заметки
+     * @param title  заголовок заметки
+     * @param text  тест заметки
      */
     override fun saveText(title: String, text: String) {
         view?.onSaveSuccess(title, text)
@@ -29,8 +29,8 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
     /**
      * Обработка действий с заметкой по отправке в сторонние ресурсы
      *
-     * @param noteTitle - заголовок заметки
-     * @param editText - тест заметки
+     * @param noteTitle  заголовок заметки
+     * @param editText  тест заметки
      */
     override fun shareDataBtn(noteTitle: String, editText: String) {
         var textError: String = dataIsEmpty(noteTitle, editText)
@@ -49,8 +49,8 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
     /**
      * Проверка ввода данных
      *
-     * @param title - заголовок заметки
-     * @param text - тест заметки
+     * @param title  заголовок заметки
+     * @param text  тест заметки
      * @return
      */
     private fun dataIsEmpty(title: String, text: String): String {

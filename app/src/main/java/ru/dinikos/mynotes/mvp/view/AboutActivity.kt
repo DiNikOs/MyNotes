@@ -16,7 +16,7 @@ class AboutActivity : AppCompatActivity(), DefaultView  {
     /**
      * Вызов при первом создании AboutActivity
      *
-     * @param savedInstanceState - контекст для работы с Activity(ключ-значение)
+     * @param savedInstanceState  контекст для работы с Activity(ключ-значение)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
