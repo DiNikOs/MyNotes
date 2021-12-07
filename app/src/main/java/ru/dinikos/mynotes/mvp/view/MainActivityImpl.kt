@@ -5,11 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
+import ru.dinikos.mynotes.mvp.adapters.NotesAdapter
+import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.presenter.BasePresenter
 import ru.dinikos.mynotes.mvp.presenter.StartPresenter
+import ru.dinikos.mynotes.mvp.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 
@@ -18,6 +23,10 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     private lateinit var binding: ActivityMainBinding
 
     private var startPresent: BasePresenter? = null
+
+    private var repository: RepositoryNotes = RepositoryNotes()
+
+    private val listNotes: List<Note> = repository!!.getTestListNotes(5)
 
     /**
      * Вызов при первом создании Activity
@@ -37,6 +46,10 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
+        val recyclerView: RecyclerView = recyclerViewMain
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = NotesAdapter(listNotes, null)
+
         saveTextBtn.also{
             it.setOnClickListener {
                 startPresent?.toSaveText(noteTitle.text.toString(), noteText.text.toString())
@@ -159,4 +172,12 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     private fun showToast(msg: String, text: String) =
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
+
+    private fun showNoteFragment(note: Note) {
+        InfoNoteFrag.newInstance {
+
+        }.showDetails(supportFragmentManager, note.title, note.text, note.createDate.toString())
+    }
+
 }
+
