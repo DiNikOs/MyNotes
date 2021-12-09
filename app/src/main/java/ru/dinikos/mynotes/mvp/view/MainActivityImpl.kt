@@ -17,6 +17,7 @@ import ru.dinikos.mynotes.mvp.presenter.StartPresenter
 import ru.dinikos.mynotes.mvp.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
+import java.util.*
 
 class MainActivityImpl : AppCompatActivity(), BaseView {
 
@@ -26,7 +27,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     private var repository: RepositoryNotes = RepositoryNotes()
 
-    private val listNotes: List<Note> = repository!!.getTestListNotes(5)
+    private var listNotes: MutableList<Note> = repository!!.getTestListNotes(5)
 
     /**
      * Вызов при первом создании Activity
@@ -46,9 +47,9 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        val recyclerView: RecyclerView = recyclerViewMain
+        val recyclerView: RecyclerView = recycler_view_main
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = NotesAdapter(listNotes, null)
+        recyclerView.adapter = NotesAdapter(listNotes, null, this)
 
         saveTextBtn.also{
             it.setOnClickListener {
@@ -121,6 +122,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     override fun onSaveSuccess(title: String, text: String) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
+        listNotes.add(Note(listNotes.size.toLong(), title, text, Date(), Date()))
         showToast(getString(R.string.msg_success), title)
     }
 
@@ -173,10 +175,9 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
 
-    private fun showNoteFragment(note: Note) {
-        InfoNoteFrag.newInstance {
-
-        }.showDetails(supportFragmentManager, note.title, note.text, note.createDate.toString())
+    override fun showNoteFragment(note: Note, containerViewId:Int) {
+        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
+        InfoNoteFrag.newInstance(note).showDetails(supportFragmentManager, R.id.container_frag_layout)
     }
 
 }

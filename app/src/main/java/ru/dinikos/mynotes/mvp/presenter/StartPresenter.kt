@@ -1,6 +1,8 @@
 package ru.dinikos.mynotes.mvp.presenter
 
+import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.view.BaseView
+import ru.dinikos.mynotes.mvp.view.InfoNoteFrag
 
 class StartPresenter(var view: BaseView?): BasePresenter  {
 
@@ -44,6 +46,16 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
      */
     override fun operateAboutBtn() {
         view?.openAboutActivity()
+    }
+
+    /**
+     * Обработка отображения фрагмента
+     *
+     * @param note  модель данных
+     * @param containerViewId  id контейнера который будет получать фрагмент
+     */
+    override fun showFragment(note: Note, containerViewId:Int) {
+        view?.showNoteFragment(note, containerViewId)
     }
 
     /**

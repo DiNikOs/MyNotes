@@ -1,5 +1,7 @@
 package ru.dinikos.mynotes.mvp.presenter
 
+import ru.dinikos.mynotes.mvp.entities.Note
+
 interface BasePresenter {
 
     companion object {
@@ -13,5 +15,7 @@ interface BasePresenter {
     fun shareDataBtn(noteTitle: String, editText: String)
 
     fun operateAboutBtn()
+
+    fun showFragment(note: Note, containerViewId:Int)
 
 }

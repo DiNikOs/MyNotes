@@ -10,5 +10,5 @@ data class Note(
     val title: String = "",
     val text: String = "",
     val createDate: Date = Date(),
-    val changeDate: Date = Date()
+    var changeDate: Date = Date()
 ) : Parcelable

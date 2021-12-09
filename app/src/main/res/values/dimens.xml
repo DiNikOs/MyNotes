@@ -9,6 +9,8 @@
     <dimen name="activity_padding_5">5dp</dimen>
     <dimen name="activity_padding_10">10dp</dimen>
 
+    <dimen name="linear_layout_height_400">400dp</dimen>
+    <dimen name="linear_layout_height_300">300dp</dimen>
     <dimen name="linear_layout_height_200">200dp</dimen>
     <dimen name="linear_layout_height_100">100dp</dimen>
     <dimen name="linear_layout_height_50">50dp</dimen>

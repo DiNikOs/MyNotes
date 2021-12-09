@@ -27,7 +27,7 @@ class RepositoryNotes {
      * @param size размер массива тестовых данных
      * @return
      */
-    fun getTestListNotes(size: Int) : List<Note> {
+    fun getTestListNotes(size: Int) : MutableList<Note> {
         val result = mutableListOf<Note>()
         for (inx in 1..size) {
             result.add(Note(inx.toLong(), "title$inx", "text$inx", Date(), Date() ))
