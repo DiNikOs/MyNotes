@@ -19,130 +19,41 @@
         android:layout_centerVertical="true"
         app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_alignParentTop="true"
-        android:id="@+id/recycler_view_main"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/linear_layout_height_300"
-        android:background="@color/recyclerViewBackground"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:gravity="start"
-        android:ellipsize="start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:ignore="MissingConstraints" />
-
-        <LinearLayout
-            android:id="@+id/container_frag_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/linear_layout_height_200"
-            android:layout_centerVertical="true"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@+id/container_notes_layout">
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container_notes_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/linear_layout_height_200"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_padding_5"
-        android:layout_centerVertical="true"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <EditText
-            android:id="@+id/noteTitle"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_view_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-
-            android:background="@drawable/edit_text"
-            android:ellipsize="start"
-            android:ems="10"
-            android:gravity="start"
-            android:hint="@string/prompt_title"
-            android:inputType="text"
-            android:minHeight="@dimen/edit_text_minHeight"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:textColorHint="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <EditText
-            android:id="@+id/noteText"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_text_multi_height"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/edit_text_multi_marginTop"
-            android:background="@drawable/edit_text"
-            android:ellipsize="start"
-            android:ems="10"
-            android:gravity="start"
-            android:hint="@string/prompt_text"
-            android:inputType="textMultiLine"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:selectAllOnFocus="true"
-            app:layout_constraintBottom_toBottomOf="@+id/noteTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:layout_gravity="left"
+            style="@style/Toolbar"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="@dimen/activity_padding_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="#fcffff"
+            app:title="Notes">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/toolbar_btn_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="@dimen/activity_padding_10"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@android:drawable/ic_dialog_info"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintBottom_toBottomOf="@+id/noteText">
-
-            <Button
-                android:id="@+id/saveTextBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/btn_marginTop"
-                android:text="@string/prompt_save_btn"
-                app:layout_constraintBottom_toBottomOf="@+id/noteText"
-                app:layout_constraintVertical_bias="0.2" />
-
-            <Button
-                android:id="@+id/shareDataBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginTop="@dimen/btn_marginTop"
-
-                android:text="@string/prompt_share_btn"
-                app:layout_constraintBottom_toBottomOf="@+id/noteText"
-                app:layout_constraintStart_toStartOf="@+id/saveTextBtn"
-                app:layout_constraintVertical_bias="0.2" />
-
-            <Button
-                android:id="@+id/goAboutBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginTop="@dimen/btn_marginTop"
-                android:text="@string/prompt_go_about_btn"
-                app:layout_constraintBottom_toBottomOf="@+id/noteText"
-                app:layout_constraintStart_toStartOf="@+id/shareDataBtn"
-                app:layout_constraintVertical_bias="0.2" />
-        </LinearLayout>
-
+            android:background="@color/recyclerViewBackground"
+            android:ellipsize="start"
+            android:gravity="start"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_view_main"
+            tools:ignore="MissingConstraints" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

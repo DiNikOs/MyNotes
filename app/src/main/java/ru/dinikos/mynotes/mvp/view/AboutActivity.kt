@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_about.*
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.presenter.DefaultPresentImpl
-import ru.dinikos.mynotes.mvp.presenter.DefaultPresenter
+import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
+import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 
 class AboutActivity : AppCompatActivity(), DefaultView  {
 

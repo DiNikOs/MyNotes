@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
-import ru.dinikos.mynotes.mvp.adapters.NotesAdapter
+import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
+import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.StartPresenter
+import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.entities.Note
-import ru.dinikos.mynotes.mvp.presenter.BasePresenter
-import ru.dinikos.mynotes.mvp.presenter.StartPresenter
-import ru.dinikos.mynotes.mvp.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 import java.util.*
@@ -49,19 +49,10 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         startPresent = StartPresenter(this)
         val recyclerView: RecyclerView = recycler_view_main
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = NotesAdapter(listNotes, null, this)
+        recyclerView.adapter = NotesRecyclerAdapter(listNotes, null, this)
 
-        saveTextBtn.also{
-            it.setOnClickListener {
-                startPresent?.toSaveText(noteTitle.text.toString(), noteText.text.toString())
-            }
-        }
-        shareDataBtn.also {
-            it.setOnClickListener {
-                startPresent?.shareDataBtn(noteTitle.text.toString(), noteText.text.toString())
-            }
-        }
-        goAboutBtn.also {
+
+        toolbar_btn_about.also {
             it.setOnClickListener {
                startPresent?.operateAboutBtn()
             }
@@ -177,7 +168,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     override fun showNoteFragment(note: Note, containerViewId:Int) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
-        InfoNoteFrag.newInstance(note).showDetails(supportFragmentManager, R.id.container_frag_layout)
+        NoteFragment.newInstance(note).showDetails(supportFragmentManager, R.id.activity_main)
     }
 
 }

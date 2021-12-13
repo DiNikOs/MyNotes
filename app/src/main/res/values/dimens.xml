@@ -41,5 +41,8 @@
 
     <dimen name="title_note_text_size">14sp</dimen>
 
+<!--    Toolbar-->
+    <dimen name="toolbar_text_size">20sp</dimen>
+
 
 </resources>

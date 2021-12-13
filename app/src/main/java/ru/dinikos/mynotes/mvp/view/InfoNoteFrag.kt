@@ -1,12 +1,12 @@
 package ru.dinikos.mynotes.mvp.view
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.entities.Note
@@ -36,7 +36,7 @@ class InfoNoteFrag : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView")
+        Log.d(TAG_MAIN_FRAG, "onCreateView")
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 

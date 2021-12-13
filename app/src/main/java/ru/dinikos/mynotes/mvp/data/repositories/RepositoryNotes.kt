@@ -1,4 +1,4 @@
-package ru.dinikos.mynotes.mvp.repositories
+package ru.dinikos.mynotes.mvp.data.repositories
 
 import ru.dinikos.mynotes.mvp.entities.Note
 import java.util.*
