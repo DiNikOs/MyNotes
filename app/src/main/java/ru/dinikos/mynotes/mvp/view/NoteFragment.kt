@@ -9,14 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import kotlinx.android.synthetic.main.activity_about.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.fragment_note.*
-import kotlinx.android.synthetic.main.fragment_note.backToStartActivity
 import kotlinx.android.synthetic.main.fragment_note.view.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 
 class NoteFragment: Fragment(), DefaultView {
@@ -48,6 +46,7 @@ class NoteFragment: Fragment(), DefaultView {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG_NOTE_FRAG, "onCreateView")
+        defaultPresenter = DefaultPresentImpl(this)
         return inflater.inflate(R.layout.fragment_note, container, false)
     }
 
@@ -61,6 +60,7 @@ class NoteFragment: Fragment(), DefaultView {
         itemView.noteTitle.setText(arguments?.getString(ARG_TITLE))
         itemView.noteText.setText(arguments?.getString(ARG_TEXT))
         itemView.noteCreateDate.text = arguments?.getString(ARG_CREATE_DATE)
+
         super.onViewCreated(itemView, savedInstanceState)
         saveTextBtn.also{
             it.setOnClickListener {
@@ -72,7 +72,7 @@ class NoteFragment: Fragment(), DefaultView {
                 startPresent?.shareDataBtn(noteTitle.text.toString(), noteText.text.toString())
             }
         }
-        backToStartActivity.also {
+        back_to_start_activity.also {
             it.setOnClickListener {
                 defaultPresenter?.backToMainActivity()
             }
@@ -99,8 +99,9 @@ class NoteFragment: Fragment(), DefaultView {
     fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 
     override fun backToMainActivity() {
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_backToMain))
-        val activity = activity as MainActivityImpl
-        activity.onBackPressed()
+        Log.d(TAG_NOTE_FRAG, getString(R.string.msg_backToMain))
+        val intent = Intent(activity, MainActivityImpl::class.java)
+        startActivity(intent)
     }
+
 }
