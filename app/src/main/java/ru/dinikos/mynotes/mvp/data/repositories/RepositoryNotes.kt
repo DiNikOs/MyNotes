@@ -1,6 +1,6 @@
 package ru.dinikos.mynotes.mvp.data.repositories
 
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import java.util.*
 
 class RepositoryNotes {

@@ -1,5 +1,6 @@
 package ru.dinikos.mynotes.mvp.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,27 +8,59 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_note.*
+import kotlinx.android.synthetic.main.fragment_note.*
+import kotlinx.coroutines.CoroutineScope
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
+import ru.dinikos.mynotes.mvp.adapters.NotesPagerAdapter
 import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
+import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
-import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
-import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
-import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
-class MainActivityImpl : AppCompatActivity(), BaseView {
+abstract class NotesPagerActivity :
+    AppCompatActivity(), CoroutineScope, BaseView, DefaultView {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: NotesPagerAdapter
+    private lateinit var viewPager: ViewPager2
 
     private var startPresent: BasePresenter? = null
+    private var defaultPresenter: DefaultPresenter? = null
 
-    private var repository: RepositoryNotes = RepositoryNotes()
+    private var note: Note? = null
 
-    private var listNotes: MutableList<Note> = repository!!.getTestListNotes(10)
+    private var listNotes: List<Note>? = null
+
+    abstract val layoutRes: Int?
+
+//    private var adapter: NotesPagerAdapter? =  NotesPagerAdapter(this)
+
+    companion object {
+        private const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
+        private const val SELECTED_POSITION = "selectedPosition"
+        private const val NOTES_LIST = "notesList"
+
+        fun startActivity(
+            context: Context,
+            notesList: List<Note>? = null,
+            selectPosition: Int = 0
+        ) {
+            val intent = Intent(context, NotesPagerActivity::class.java)
+
+            notesList?.let {
+                intent.putParcelableArrayListExtra(NOTES_LIST, ArrayList(notesList))
+            }
+            context.startActivity(intent)
+        }
+    }
 
     /**
      * Вызов при первом создании Activity
@@ -47,28 +80,29 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        val recyclerView: RecyclerView = recycler_view_main
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = NotesRecyclerAdapter(listNotes, null, this)
+        defaultPresenter = DefaultPresentImpl(this)
+
+        adapter?.items = intent.getParcelableArrayListExtra(NOTES_LIST)?: listOf(Note())
+        viewPager = view_pager
+        viewPager.adapter = adapter
 
 
-        toolbar_btn_about.also {
-            it.setOnClickListener {
-               startPresent?.operateAboutBtn()
-            }
-        }
-        toolbar_btn_open_view_pager.also {
-            it.setOnClickListener {
-                startPresent?.openPagerViewBtn()
-            }
-        }
-    }
-
-//    private val notesAdapter: NotesPagerAdapter by lazy {
-//        NotesPagerAdapter {
-//            NotesPagerActivity.startActivity(this, listNotes, 0)
+//        saveTextBtn.also{
+//            it.setOnClickListener {
+//                startPresent?.toSaveText(noteTitle.text.toString(), noteText.text.toString())
+//            }
 //        }
-//    }
+//        shareDataBtn.also {
+//            it.setOnClickListener {
+//                startPresent?.shareDataBtn(noteTitle.text.toString(), noteText.text.toString())
+//            }
+//        }
+//        back_to_start_activity.also {
+//            it.setOnClickListener {
+//                defaultPresenter?.backToMainActivity()
+//            }
+//        }
+    }
 
     /**
      * Вызов перед открытием Activity
@@ -76,7 +110,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     override fun onStart() {
         super.onStart()
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_start))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_start))
     }
 
     /**
@@ -85,7 +119,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     override fun onResume() {
         super.onResume()
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_resume))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_resume))
     }
 
     /**
@@ -94,7 +128,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     override fun onPause() {
         super.onPause()
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_pause))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_pause))
     }
 
     /**
@@ -103,7 +137,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     override fun onStop() {
         super.onStop()
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_stop))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_stop))
     }
 
     /**
@@ -112,7 +146,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_destroy))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
         startPresent = null
     }
 
@@ -123,8 +157,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  тест заметки
      */
     override fun onSaveSuccess(title: String, text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
-        listNotes.add(Note(listNotes.size.toLong(), title, text, Date(), Date()))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_success) + " title:" + title)
+//        listNotes.add(Note(notesList.size.toLong(), title, text, Date(), Date()))
         showToast(getString(R.string.msg_success), title)
     }
 
@@ -134,7 +168,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  текст с описанием где ошибка
      */
     override fun onSaveError(text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_not_success) + " title:" + text)
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_not_success) + " title:" + text)
         showToast(getString(R.string.msg_error_save_text), text)
     }
 
@@ -144,7 +178,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  текст с описанием где ошибка
      */
     override fun onAttemptSaveBlankText(text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_error_save_text))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_error_save_text))
         showToast(getString(R.string.msg_data_blank), text)
     }
 
@@ -155,22 +189,16 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  тест заметки
      */
     override fun shareData(title: String, text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_shareData) + " title:" + title)
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_shareData) + " title:" + title)
         startActivity(Intent(Intent.ACTION_SEND).apply {
-            type = TYPE_SHARE
+            type = BaseView.TYPE_SHARE
             putExtra(Intent.EXTRA_TEXT, "$title:\n$text")
         })
     }
 
     override fun openAboutActivity() {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_openAbout))
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_openAbout))
         startActivity(Intent(this, AboutActivity::class.java))
-    }
-
-    override fun openPagerViewActivity() {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_openPagerView))
-        NotesPagerActivity.startActivity(this, listNotes, 0)
-//        startActivity(Intent(this, NotesPagerActivity::class.java))
     }
 
     /**
@@ -184,9 +212,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
 
     override fun showNoteFragment(note: Note, containerViewId:Int) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_intent_frag) + " - note: $note")
         NoteFragment.newInstance(note).showDetails(supportFragmentManager, R.id.activity_main)
     }
 
 }
-

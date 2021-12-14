@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 
 class InfoNoteFrag : Fragment() {
 

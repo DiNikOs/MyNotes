@@ -9,10 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.fragment_note.*
 import kotlinx.android.synthetic.main.fragment_note.view.*
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
@@ -39,6 +40,7 @@ class NoteFragment: Fragment(), DefaultView {
             return fragment
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

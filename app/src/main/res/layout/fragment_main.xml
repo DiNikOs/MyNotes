@@ -10,6 +10,36 @@
     android:paddingHorizontal="8dp"
     android:paddingVertical="4dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/Toolbar"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="#fcffff"
+        app:title="Item note">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/toolbar_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/toolbar_text_size"
+            android:textStyle="bold"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toolbar_btn_save_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="@dimen/activity_padding_10"
+            android:src="@android:drawable/ic_menu_save"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/txtTitleNote"
         android:layout_width="match_parent"
@@ -22,7 +52,7 @@
     <TextView
         android:id="@+id/txtTextNote"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:hint="@string/prompt_title"
         tools:text="note text" />

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView

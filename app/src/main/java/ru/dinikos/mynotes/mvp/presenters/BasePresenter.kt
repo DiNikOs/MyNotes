@@ -1,6 +1,6 @@
 package ru.dinikos.mynotes.mvp.presenters
 
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 
 interface BasePresenter {
 
@@ -17,5 +17,7 @@ interface BasePresenter {
     fun operateAboutBtn()
 
     fun showFragment(note: Note, containerViewId:Int)
+
+    fun openPagerViewBtn()
 
 }

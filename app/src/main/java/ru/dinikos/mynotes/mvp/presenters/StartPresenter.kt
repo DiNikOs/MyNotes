@@ -1,6 +1,6 @@
 package ru.dinikos.mynotes.mvp.presenters
 
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.view.BaseView
 
 class StartPresenter(var view: BaseView?): BasePresenter  {
@@ -45,6 +45,14 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
      */
     override fun operateAboutBtn() {
         view?.openAboutActivity()
+    }
+
+    /**
+     * Обработка перехода About Activity
+     *
+     */
+    override fun openPagerViewBtn() {
+        view?.openPagerViewActivity()
     }
 
     /**

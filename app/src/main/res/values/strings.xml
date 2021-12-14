@@ -25,6 +25,7 @@
 
     <string name="msg_shareData">Intent shareData</string>
     <string name="msg_openAbout">Intent openAbout</string>
+    <string name="msg_openPagerView">Intent openPagerView</string>
     <string name="msg_backToMain">Intent mainActivity</string>
     <string name="msg_intent_frag">Intent Fragment</string>
 
