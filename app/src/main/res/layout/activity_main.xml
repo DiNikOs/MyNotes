@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,19 +42,14 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_main"
+        <LinearLayout
+            android:id="@+id/container_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:background="@color/recyclerViewBackground"
-            android:ellipsize="start"
-            android:gravity="start"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_padding_5"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

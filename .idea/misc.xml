@@ -8,12 +8,14 @@
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/drawable/ic_launcher_background.xml" value="0.17291666666666666" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/drawable/toolbar.xml" value="0.1828125" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/activity_about.xml" value="0.16847826086956522" />
-        <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/activity_note.xml" value="0.18" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/content_main.xml" value="0.20471014492753623" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/fragment_first.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/fragment_main.xml" value="0.2" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/fragment_note.xml" value="0.12760416666666666" />
+        <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/fragment_recycler.xml" value="0.13405797101449277" />
+        <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/fragment_recycler_list.xml" value="0.2265625" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/layout/fragment_second.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/menu/menu_main.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/Dion/Documents/AndroidProjects/MyNotes/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.28102564102564104" />

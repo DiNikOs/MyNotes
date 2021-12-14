@@ -1,4 +1,4 @@
-package ru.dinikos.mynotes.mvp.view
+package ru.dinikos.mynotes.mvp.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,8 +16,10 @@ import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
+import ru.dinikos.mynotes.mvp.view.DefaultView
+import ru.dinikos.mynotes.mvp.view.MainActivityImpl
 
-class NoteFragment: Fragment(), DefaultView {
+class NoteFragment: Fragment(), DefaultView, ShowFragment {
 
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
@@ -86,7 +88,7 @@ class NoteFragment: Fragment(), DefaultView {
      * @param manager
      * @param containerViewId
      */
-    fun showDetails(manager: FragmentManager, containerViewId: Int) {
+    override fun showFragment(manager: FragmentManager, containerViewId: Int) {
         val fragment: Fragment? = this
         if (fragment != null) {
             manager

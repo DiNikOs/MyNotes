@@ -43,6 +43,7 @@
 
 <!--    Toolbar-->
     <dimen name="toolbar_text_size">20sp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 
 </resources>
