@@ -1,6 +1,5 @@
 package ru.dinikos.mynotes.mvp.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -17,12 +16,12 @@ import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 import ru.dinikos.mynotes.mvp.view.DefaultView
-import ru.dinikos.mynotes.mvp.view.MainActivityImpl
 
 class NoteFragment: Fragment(), DefaultView, ShowFragment {
 
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
+    private lateinit var managerFrag: FragmentManager
 
     companion object {
         val TAG_NOTE_FRAG = NoteFragment:: class.java.name + " TAG"
@@ -90,10 +89,12 @@ class NoteFragment: Fragment(), DefaultView, ShowFragment {
      */
     override fun showFragment(manager: FragmentManager, containerViewId: Int) {
         val fragment: Fragment? = this
+        managerFrag = manager
         if (fragment != null) {
-            manager
+            managerFrag
                 .beginTransaction()
                 .replace(containerViewId, fragment)
+                .addToBackStack(fragment.tag)
                 .commit()
         }
     }
@@ -102,8 +103,6 @@ class NoteFragment: Fragment(), DefaultView, ShowFragment {
 
     override fun backToMainActivity() {
         Log.d(TAG_NOTE_FRAG, getString(R.string.msg_backToMain))
-        val intent = Intent(activity, MainActivityImpl::class.java)
-        startActivity(intent)
+        managerFrag.popBackStack()
     }
-
 }

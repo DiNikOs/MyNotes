@@ -164,7 +164,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     override fun showNoteFragment(note: Note, containerViewId:Int) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
-        NoteFragment.newInstance(note).showFragment(supportFragmentManager, R.id.activity_main)
+        NoteFragment.newInstance(note).showFragment(supportFragmentManager, R.id.container_recycler)
     }
 
     fun showRecyclerFragment(list: MutableList<Note>, containerViewId:Int) {

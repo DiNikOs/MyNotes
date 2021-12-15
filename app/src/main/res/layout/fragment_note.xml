@@ -21,8 +21,7 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_padding_5"
         android:layout_centerVertical="true"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/noteTitle"
