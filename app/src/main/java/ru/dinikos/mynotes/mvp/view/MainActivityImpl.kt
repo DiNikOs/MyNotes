@@ -24,9 +24,9 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     private var startPresent: BasePresenter? = null
 
-    private var repository: RepositoryNotes = RepositoryNotes()
+    private var repository: RepositoryNotes = RepositoryNotes
 
-    private var listNotes: MutableList<Note> = repository!!.getTestListNotes(10)
+    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
 
     /**
      * Вызов при первом создании Activity

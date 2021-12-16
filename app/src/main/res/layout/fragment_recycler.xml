@@ -21,10 +21,10 @@
         style="@style/TextViewStyle"
         android:hint="@string/prompt_title"
         tools:text="note text" />
-
     <TextView
         android:id="@+id/txtCreateDateNote"
         style="@style/TextViewStyle"
         android:hint="@string/prompt_text"
         tools:text="note date" />
+
 </LinearLayout>

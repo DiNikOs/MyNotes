@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,8 +23,6 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/toolbar_text_size"
             android:textStyle="bold"/>
-
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toolbar_btn_save_note"
             android:layout_width="wrap_content"
@@ -33,9 +30,6 @@
             android:layout_gravity="right"
             android:padding="@dimen/activity_padding_10"
             android:src="@android:drawable/ic_menu_save"/>
-
     </androidx.appcompat.widget.Toolbar>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
