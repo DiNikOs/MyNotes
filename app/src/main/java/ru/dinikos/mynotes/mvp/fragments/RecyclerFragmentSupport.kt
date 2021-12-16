@@ -17,32 +17,25 @@ import ru.dinikos.mynotes.mvp.view.BaseView
 /**
  * A fragment representing a list of Items.
  */
-class RecyclerFragment : Fragment(), ShowFragment {
+class RecyclerFragmentSupport : Fragment(), ShowFragmentSupport {
 
     private var columnCount = 1
 
-    private var listNotes: MutableList<Note>? = null
+    private lateinit var listNotes: MutableList<Note>
 
     companion object {
 
-        val TAG_RECYCLER_FRAG = RecyclerFragment:: class.java.name + " TAG"
-        const val ARG_COLUMN_COUNT = "column-count"
+        const val TAG_RECYCLER_FRAG = "RecyclerFragment TAG"
 
         @JvmStatic
         fun newInstance(list: MutableList<Note>) =
-            RecyclerFragment().apply {
+            RecyclerFragmentSupport().apply {
                 listNotes = list
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, list.size)
-                }
             }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
     override fun onCreateView(
@@ -54,24 +47,27 @@ class RecyclerFragment : Fragment(), ShowFragment {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager =  LinearLayoutManager(context)
-                adapter = NotesRecyclerAdapter(listNotes!!, context as BaseView)
+                adapter = NotesRecyclerAdapter(listNotes, context as BaseView)
             }
         }
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     /**
      * Замещает новыми значениями фрагмент
      *
      * @param manager
-     * @param containerViewId
      */
-    override fun showFragment(manager: FragmentManager, containerViewId: Int) {
+    override fun showFragment(manager: FragmentManager) {
         val fragment: Fragment? = this
         if (fragment != null) {
             manager
                 .beginTransaction()
-                .replace(containerViewId, fragment)
+                .replace(R.id.container_recycler, fragment)
                 .commit()
         }
     }

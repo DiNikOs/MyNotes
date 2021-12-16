@@ -51,10 +51,9 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
      * Обработка отображения фрагмента
      *
      * @param note  модель данных
-     * @param containerViewId  id контейнера который будет получать фрагмент
      */
-    override fun showFragment(note: Note, containerViewId:Int) {
-        view?.showNoteFragment(note, containerViewId)
+    override fun showFragment(note: Note) {
+        view?.showNoteFragment(note)
     }
 
     /**

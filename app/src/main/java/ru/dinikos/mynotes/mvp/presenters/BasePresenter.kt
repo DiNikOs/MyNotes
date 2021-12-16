@@ -5,7 +5,7 @@ import ru.dinikos.mynotes.mvp.entities.Note
 interface BasePresenter {
 
     companion object {
-        var TAG_FIRST_PRESENT = "FirstPresent"
+        const val TAG_FIRST_PRESENT = "FirstPresent"
     }
 
     fun toSaveText(noteTitle: String, editText: String)
@@ -16,6 +16,6 @@ interface BasePresenter {
 
     fun operateAboutBtn()
 
-    fun showFragment(note: Note, containerViewId:Int)
+    fun showFragment(note: Note)
 
 }

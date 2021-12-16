@@ -22,6 +22,16 @@ class NotesRecyclerAdapter(
 
     override fun getItemCount(): Int = listNotes.count()
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesRecyclerAdapter.NotesViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.fragment_recycler, parent, false)
+        return NotesViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
+        holder.bind(listNotes[position])
+    }
+
     inner class NotesViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(note: Note) = with(containerView) {
@@ -31,19 +41,9 @@ class NotesRecyclerAdapter(
 
             itemView.setOnClickListener {
                 var position = adapterPosition
-                Log.d("Adapter",  " [adapterPosition: $position ]")
-                startPresent?.showFragment(note, position)
+                Log.d("RecyclerAdapter",  " [adapterPosition: $position ]")
+                startPresent?.showFragment(note)
             }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesRecyclerAdapter.NotesViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_recycler, parent, false)
-        return NotesViewHolder(itemView)
-    }
-
-    override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
-        holder.bind(listNotes[position])
     }
 }

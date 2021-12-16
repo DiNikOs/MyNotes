@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
-import ru.dinikos.mynotes.mvp.presenters.BasePresenter
-import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.entities.Note
-import ru.dinikos.mynotes.mvp.fragments.NoteFragment
-import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
+import ru.dinikos.mynotes.mvp.fragments.NoteFragmentSupport
+import ru.dinikos.mynotes.mvp.fragments.RecyclerFragmentSupport
+import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 import java.util.*
@@ -46,12 +46,9 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        showRecyclerFragment(listNotes, R.id.container_recycler)
-
-        toolbar_btn_about.also {
-            it.setOnClickListener {
-               startPresent?.operateAboutBtn()
-            }
+        showRecyclerFragment(listNotes)
+        toolbar_btn_about.setOnClickListener {
+            startPresent?.operateAboutBtn()
         }
     }
 
@@ -162,13 +159,14 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
 
-    override fun showNoteFragment(note: Note, containerViewId:Int) {
+    override fun showNoteFragment(note: Note) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
-        NoteFragment.newInstance(note).showFragment(supportFragmentManager, R.id.container_recycler)
+        NoteFragmentSupport.newInstance(note)
+            .showFragment(supportFragmentManager)
     }
 
-    fun showRecyclerFragment(list: MutableList<Note>, containerViewId:Int) {
-        RecyclerFragment.newInstance(list).showFragment(supportFragmentManager, containerViewId)
+    private fun showRecyclerFragment(list: MutableList<Note>) {
+        RecyclerFragmentSupport.newInstance(list).showFragment(supportFragmentManager)
     }
 }
 
