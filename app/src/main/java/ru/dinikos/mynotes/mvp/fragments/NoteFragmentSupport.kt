@@ -130,7 +130,4 @@ class NoteFragmentSupport : Fragment(), DefaultView, ShowFragmentSupport, BaseVi
         TODO("Not yet implemented")
     }
 
-    override fun showNoteFragment(note: Note) {
-        TODO("Not yet implemented")
-    }
 }

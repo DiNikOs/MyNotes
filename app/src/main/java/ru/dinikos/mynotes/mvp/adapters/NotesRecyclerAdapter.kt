@@ -9,16 +9,11 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.entities.Note
-import ru.dinikos.mynotes.mvp.presenters.BasePresenter
-import ru.dinikos.mynotes.mvp.presenters.StartPresenter
-import ru.dinikos.mynotes.mvp.view.BaseView
 
 class NotesRecyclerAdapter(
     val listNotes: List<Note>,
-    val context: BaseView
+    var onItemClick: ((Note) -> Unit)? = null
 ) : RecyclerView.Adapter<NotesRecyclerAdapter.NotesViewHolder>() {
-
-    private var startPresent: BasePresenter = StartPresenter(context)
 
     override fun getItemCount(): Int = listNotes.count()
 
@@ -42,7 +37,7 @@ class NotesRecyclerAdapter(
             itemView.setOnClickListener {
                 var position = adapterPosition
                 Log.d("RecyclerAdapter",  " [adapterPosition: $position ]")
-                startPresent?.showFragment(note)
+                onItemClick?.invoke(note)
             }
         }
     }

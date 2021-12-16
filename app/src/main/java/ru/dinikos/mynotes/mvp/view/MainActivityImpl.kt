@@ -159,14 +159,16 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
 
-    override fun showNoteFragment(note: Note) {
+    private fun showNoteFragment(note: Note) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
         NoteFragmentSupport.newInstance(note)
             .showFragment(supportFragmentManager)
     }
 
     private fun showRecyclerFragment(list: MutableList<Note>) {
-        RecyclerFragmentSupport.newInstance(list).showFragment(supportFragmentManager)
+        RecyclerFragmentSupport.newInstance(list, onItemClick = {
+            showNoteFragment(it)
+        }).showFragment(supportFragmentManager)
     }
 }
 

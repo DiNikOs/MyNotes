@@ -1,7 +1,5 @@
 package ru.dinikos.mynotes.mvp.view
 
-import ru.dinikos.mynotes.mvp.entities.Note
-
 interface BaseView {
 
     companion object {
@@ -20,5 +18,4 @@ interface BaseView {
 
     fun openAboutActivity()
 
-    fun showNoteFragment(note: Note)
 }

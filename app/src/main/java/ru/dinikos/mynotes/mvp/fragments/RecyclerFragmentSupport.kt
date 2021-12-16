@@ -12,25 +12,24 @@ import androidx.fragment.app.FragmentManager
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
 import ru.dinikos.mynotes.mvp.entities.Note
-import ru.dinikos.mynotes.mvp.view.BaseView
 
 /**
  * A fragment representing a list of Items.
  */
 class RecyclerFragmentSupport : Fragment(), ShowFragmentSupport {
 
-    private var columnCount = 1
-
     private lateinit var listNotes: MutableList<Note>
+    private lateinit var onClick: ((Note) -> Unit)
 
     companion object {
 
         const val TAG_RECYCLER_FRAG = "RecyclerFragment TAG"
 
         @JvmStatic
-        fun newInstance(list: MutableList<Note>) =
+        fun newInstance(list: MutableList<Note>, onItemClick: ((Note) -> Unit)) =
             RecyclerFragmentSupport().apply {
                 listNotes = list
+                onClick = onItemClick
             }
     }
 
@@ -47,7 +46,7 @@ class RecyclerFragmentSupport : Fragment(), ShowFragmentSupport {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager =  LinearLayoutManager(context)
-                adapter = NotesRecyclerAdapter(listNotes, context as BaseView)
+                view.adapter = NotesRecyclerAdapter(listNotes, onClick)
             }
         }
         return view

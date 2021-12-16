@@ -1,6 +1,5 @@
 package ru.dinikos.mynotes.mvp.presenters
 
-import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.view.BaseView
 
 class StartPresenter(var view: BaseView?): BasePresenter  {
@@ -45,15 +44,6 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
      */
     override fun operateAboutBtn() {
         view?.openAboutActivity()
-    }
-
-    /**
-     * Обработка отображения фрагмента
-     *
-     * @param note  модель данных
-     */
-    override fun showFragment(note: Note) {
-        view?.showNoteFragment(note)
     }
 
     /**
