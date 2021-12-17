@@ -10,8 +10,8 @@ import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
 import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.entities.Note
-import ru.dinikos.mynotes.mvp.fragments.NoteFragmentSupport
-import ru.dinikos.mynotes.mvp.fragments.RecyclerFragmentSupport
+import ru.dinikos.mynotes.mvp.fragments.NoteFragment
+import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
@@ -161,12 +161,12 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     private fun showNoteFragment(note: Note) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
-        NoteFragmentSupport.newInstance(note)
+        NoteFragment.newInstance(note)
             .showFragment(supportFragmentManager)
     }
 
     private fun showRecyclerFragment(list: MutableList<Note>) {
-        RecyclerFragmentSupport.newInstance(list, onItemClick = {
+        RecyclerFragment.newInstance(list, onItemClick = {
             showNoteFragment(it)
         }).showFragment(supportFragmentManager)
     }

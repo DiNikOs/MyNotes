@@ -16,7 +16,7 @@ import ru.dinikos.mynotes.mvp.entities.Note
 /**
  * A fragment representing a list of Items.
  */
-class RecyclerFragmentSupport : Fragment(), ShowFragmentSupport {
+class RecyclerFragment : Fragment(), ShowFragmentSupport {
 
     private lateinit var listNotes: MutableList<Note>
     private lateinit var onClick: ((Note) -> Unit)
@@ -27,14 +27,10 @@ class RecyclerFragmentSupport : Fragment(), ShowFragmentSupport {
 
         @JvmStatic
         fun newInstance(list: MutableList<Note>, onItemClick: ((Note) -> Unit)) =
-            RecyclerFragmentSupport().apply {
+            RecyclerFragment().apply {
                 listNotes = list
                 onClick = onItemClick
             }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -50,10 +46,6 @@ class RecyclerFragmentSupport : Fragment(), ShowFragmentSupport {
             }
         }
         return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     /**

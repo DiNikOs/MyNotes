@@ -19,7 +19,7 @@ import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView
 import ru.dinikos.mynotes.mvp.view.DefaultView
 
-class NoteFragmentSupport : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
+class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
 
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
@@ -32,12 +32,12 @@ class NoteFragmentSupport : Fragment(), DefaultView, ShowFragmentSupport, BaseVi
         const val ARG_TEXT = "textNoteTxt"
         const val ARG_CREATE_DATE = "createDateNoteTxt"
 
-        fun newInstance(note: Note): NoteFragmentSupport {
-            val fragment = NoteFragmentSupport()
+        fun newInstance(note: Note): NoteFragment {
+            val fragment = NoteFragment()
             fragment.arguments = bundleOf(
                 ARG_TITLE to note.title,
                 ARG_TEXT to note.text,
-                ARG_CREATE_DATE to note.createDate.toString())//
+                ARG_CREATE_DATE to note.createDate.toString())
             return fragment
         }
     }
@@ -48,8 +48,6 @@ class NoteFragmentSupport : Fragment(), DefaultView, ShowFragmentSupport, BaseVi
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG_NOTE_FRAG, "onCreateView")
-        defaultPresenter = DefaultPresentImpl(this)
-        startPresent = StartPresenter(this)
         return inflater.inflate(R.layout.fragment_note, container, false)
     }
 
@@ -68,6 +66,8 @@ class NoteFragmentSupport : Fragment(), DefaultView, ShowFragmentSupport, BaseVi
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
         Log.d(TAG_NOTE_FRAG, "onViewCreated")
+        startPresent = StartPresenter(this)
+        defaultPresenter = DefaultPresentImpl(this)
         noteTitle.setText(arguments?.getString(ARG_TITLE).orEmpty())
         noteText.setText(arguments?.getString(ARG_TEXT).orEmpty())
         noteCreateDate.text = arguments?.getString(ARG_CREATE_DATE).orEmpty()
