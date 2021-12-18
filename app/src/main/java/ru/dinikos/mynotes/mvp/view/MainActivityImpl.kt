@@ -8,15 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
-import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.fragments.NoteFragment
 import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.DataPresenter
+import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
-import java.util.*
 
 class MainActivityImpl : AppCompatActivity(), BaseView {
 
@@ -24,9 +24,6 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     private var startPresent: BasePresenter? = null
 
-    private var repository: RepositoryNotes = RepositoryNotes
-
-    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
 
     /**
      * Вызов при первом создании Activity
@@ -46,7 +43,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        showRecyclerFragment(listNotes)
+        showRecyclerFragment()
         toolbar_btn_about.setOnClickListener {
             startPresent?.operateAboutBtn()
         }
@@ -105,8 +102,6 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  тест заметки
      */
     override fun onSaveSuccess(title: String, text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
-        listNotes.add(Note(listNotes.size.toLong(), title, text, Date(), Date()))
         showToast(getString(R.string.msg_success), title)
     }
 
@@ -165,8 +160,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
             .showFragment(supportFragmentManager)
     }
 
-    private fun showRecyclerFragment(list: MutableList<Note>) {
-        RecyclerFragment.newInstance(list, onItemClick = {
+    private fun showRecyclerFragment() {
+        RecyclerFragment.newInstance(onItemClick = {
             showNoteFragment(it)
         }).showFragment(supportFragmentManager)
     }

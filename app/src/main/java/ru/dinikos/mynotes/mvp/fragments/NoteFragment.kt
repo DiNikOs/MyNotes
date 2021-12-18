@@ -21,9 +21,9 @@ import ru.dinikos.mynotes.mvp.view.DefaultView
 
 class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
 
+    private lateinit var managerFrag: FragmentManager
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
-    private lateinit var managerFrag: FragmentManager
 
     companion object {
 
@@ -107,7 +107,7 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
     }
 
     override fun onSaveSuccess(title: String, text: String) {
-        TODO("Not yet implemented")
+        Log.d(BaseView.TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
     }
 
     override fun onSaveError(text: String) {
