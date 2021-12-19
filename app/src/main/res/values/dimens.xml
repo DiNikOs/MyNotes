@@ -14,7 +14,6 @@
     <dimen name="linear_layout_height_200">200dp</dimen>
     <dimen name="linear_layout_height_100">100dp</dimen>
     <dimen name="linear_layout_height_50">50dp</dimen>
-<!--    <dimen name="activity_vertical_margin">16dp</dimen>-->
 
     <dimen name="edit_text_marginTop">20dp</dimen>
     <dimen name="edit_text_marginHorizontal">20dp</dimen>
@@ -28,21 +27,17 @@
     <dimen name="edit_text_multi_padding">10dp</dimen>
 
     <dimen name="btn_marginTop">1dp</dimen>
-
-<!--    <dimen name="btn_save_marginBottom">100dp</dimen>-->
-<!--    <dimen name="btn_share_marginBottom">60dp</dimen>-->
-<!--    <dimen name="btn_about_marginBottom">20dp</dimen>-->
-
+    <dimen name="btn_save_marginBottom">100dp</dimen>
+    <dimen name="btn_share_marginBottom">60dp</dimen>
+    <dimen name="btn_about_marginBottom">20dp</dimen>
     <dimen name="btn_back_marginBottom">60dp</dimen>
 
     <dimen name="about_text_size">18sp</dimen>
     <dimen name="about_text">18sp</dimen>
-
-
     <dimen name="title_note_text_size">14sp</dimen>
 
 <!--    Toolbar-->
     <dimen name="toolbar_text_size">20sp</dimen>
-
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

@@ -1,15 +1,15 @@
 package ru.dinikos.mynotes.mvp.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_about.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 
-class AboutActivity : AppCompatActivity(), DefaultView  {
+class AboutActivity : AppCompatActivity(), DefaultView {
 
     private var defaultPresenter: DefaultPresenter? = null
 
@@ -30,10 +30,8 @@ class AboutActivity : AppCompatActivity(), DefaultView  {
      */
     private fun init() {
         defaultPresenter = DefaultPresentImpl(this)
-        backToStartActivity.also {
-            it.setOnClickListener {
-                defaultPresenter?.backToMainActivity()
-            }
+        backToStartActivity.setOnClickListener {
+            defaultPresenter?.backToMainActivity()
         }
     }
 

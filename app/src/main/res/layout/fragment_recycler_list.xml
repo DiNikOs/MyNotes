@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_view_main"
+    android:name="ru.dinikos.mynotes.mvp.fragments.RecyclerFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_centerVertical="true"
+    android:background="@color/recyclerViewBackground"
+    android:ellipsize="start"
+    android:gravity="start"
+    android:orientation="horizontal"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:listitem="@layout/fragment_recycler"
+    tools:context=".mvp.view.MainActivityImpl"
+    tools:ignore="MissingConstraints"/>
+

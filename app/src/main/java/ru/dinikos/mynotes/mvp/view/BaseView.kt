@@ -1,13 +1,11 @@
 package ru.dinikos.mynotes.mvp.view
 
-import ru.dinikos.mynotes.mvp.data.entities.Note
-
 interface BaseView {
 
     companion object {
-        var TAG_MAIN_VIEW = "MainView"
-        var TAG_ABOUT = "AboutView"
-        var TYPE_SHARE = "text/plain"
+        const val TAG_MAIN_VIEW = "MainView"
+        const val TAG_ABOUT = "AboutView"
+        const val TYPE_SHARE = "text/plain"
     }
 
     fun onSaveSuccess(title: String, text: String)
@@ -20,7 +18,4 @@ interface BaseView {
 
     fun openAboutActivity()
 
-    fun showNoteFragment(note: Note, containerViewId:Int)
-
-    fun openPagerViewActivity()
 }

@@ -5,19 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
-import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
-import ru.dinikos.mynotes.mvp.data.entities.Note
+import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.fragments.NoteFragment
+import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.DataPresenter
+import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
-import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
-import java.util.*
 
 class MainActivityImpl : AppCompatActivity(), BaseView {
 
@@ -25,9 +24,6 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     private var startPresent: BasePresenter? = null
 
-    private var repository: RepositoryNotes = RepositoryNotes()
-
-    private var listNotes: MutableList<Note> = repository!!.getTestListNotes(10)
 
     /**
      * Вызов при первом создании Activity
@@ -47,20 +43,12 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        val recyclerView: RecyclerView = recycler_view_main
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = NotesRecyclerAdapter(listNotes, null, this)
-
-
-        toolbar_btn_about.also {
-            it.setOnClickListener {
-               startPresent?.operateAboutBtn()
-            }
+        showRecyclerFragment()
+        toolbar_btn_about.setOnClickListener {
+            startPresent?.operateAboutBtn()
         }
-        toolbar_btn_open_view_pager.also {
-            it.setOnClickListener {
+        toolbar_btn_open_view_pager.setOnClickListener {
                 startPresent?.openPagerViewBtn()
-            }
         }
     }
 
@@ -123,8 +111,6 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  тест заметки
      */
     override fun onSaveSuccess(title: String, text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
-        listNotes.add(Note(listNotes.size.toLong(), title, text, Date(), Date()))
         showToast(getString(R.string.msg_success), title)
     }
 
@@ -183,10 +169,16 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
 
-    override fun showNoteFragment(note: Note, containerViewId:Int) {
+    private fun showNoteFragment(note: Note) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
-        NoteFragment.newInstance(note).showDetails(supportFragmentManager, R.id.activity_main)
+        NoteFragment.newInstance(note)
+            .showFragment(supportFragmentManager)
     }
 
+    private fun showRecyclerFragment() {
+        RecyclerFragment.newInstance(onItemClick = {
+            showNoteFragment(it)
+        }).showFragment(supportFragmentManager)
+    }
 }
 

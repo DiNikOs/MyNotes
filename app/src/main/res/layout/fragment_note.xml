@@ -21,15 +21,12 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_padding_5"
         android:layout_centerVertical="true"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-
+        app:layout_constraintTop_toTopOf="parent">
         <EditText
             android:id="@+id/noteTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-
             android:background="@drawable/edit_text"
             android:ellipsize="start"
             android:ems="10"
@@ -43,7 +40,6 @@
             android:textColorHint="@color/black"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toTopOf="parent"/>
-
         <EditText
             android:id="@+id/noteText"
             android:layout_width="match_parent"
@@ -59,9 +55,7 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:selectAllOnFocus="true"
             app:layout_constraintBottom_toBottomOf="@+id/noteTitle"/>
-
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/list_btn"
         android:layout_width="match_parent"
@@ -73,16 +67,12 @@
         android:layout_centerVertical="true"
         tools:ignore="MissingConstraints"
         app:layout_constraintBottom_toBottomOf="parent">
-
         <TextView
             android:id="@+id/noteCreateDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/TextViewStyle"
             android:hint="@string/prompt_text"
             app:layout_constraintBottom_toBottomOf="@+id/noteText"
             tools:text="note date" />
-
         <Button
             android:id="@+id/saveTextBtn"
             style="@style/Widget.AppCompat.Button.Colored"
