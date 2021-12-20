@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
 import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.fragments.NoteFragment
 import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
-import ru.dinikos.mynotes.mvp.presenters.DataPresenter
-import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
@@ -44,7 +41,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     private fun init() {
         startPresent = StartPresenter(this)
         showRecyclerFragment()
-        toolbar_btn_about.setOnClickListener {
+        binding.toolbarBtnAbout.setOnClickListener {
             startPresent?.operateAboutBtn()
         }
         toolbar_btn_open_view_pager.setOnClickListener {

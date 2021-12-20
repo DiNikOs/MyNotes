@@ -6,10 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import kotlinx.android.synthetic.main.fragment_note.*
+import kotlinx.android.synthetic.main.fragment_note.view.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
@@ -20,6 +23,14 @@ import ru.dinikos.mynotes.mvp.view.BaseView
 import ru.dinikos.mynotes.mvp.view.DefaultView
 
 class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
+
+    private var noteTitle: EditText? = null
+    private var noteText: EditText? = null
+    private var noteCreateDate: TextView? = null
+    private var saveTextBtn: Button? = null
+    private var shareDataBtn: Button? = null
+    private var backToStartActivity: Button? = null
+
 
     private lateinit var managerFrag: FragmentManager
     private var startPresent: BasePresenter? = null
@@ -68,18 +79,27 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
         Log.d(TAG_NOTE_FRAG, "onViewCreated")
         startPresent = StartPresenter(this)
         defaultPresenter = DefaultPresentImpl(this)
-        noteTitle.setText(arguments?.getString(ARG_TITLE).orEmpty())
-        noteText.setText(arguments?.getString(ARG_TEXT).orEmpty())
-        noteCreateDate.text = arguments?.getString(ARG_CREATE_DATE).orEmpty()
 
-        saveTextBtn.setOnClickListener {
-            startPresent?.toSaveText(noteTitle.text.toString(), noteText.text.toString())
+        noteTitle = itemView.noteTitle
+        noteText = itemView.noteText
+        noteCreateDate = itemView.noteCreateDate
+
+        saveTextBtn = itemView.saveTextBtn
+        shareDataBtn = itemView.shareDataBtn
+        backToStartActivity = itemView.backToStartActivity
+
+        noteTitle?.setText(arguments?.getString(ARG_TITLE).orEmpty())
+        noteText?.setText(arguments?.getString(ARG_TEXT).orEmpty())
+        noteCreateDate?.text = arguments?.getString(ARG_CREATE_DATE).orEmpty()
+
+        saveTextBtn?.setOnClickListener {
+            startPresent?.toSaveText(noteTitle?.text.toString(), noteText?.text.toString())
         }
 
-        shareDataBtn.setOnClickListener {
-            startPresent?.shareDataBtn(noteTitle.text.toString(), noteText.text.toString())
+        shareDataBtn?.setOnClickListener {
+            startPresent?.shareDataBtn(noteTitle?.text.toString(), noteText?.text.toString())
         }
-        back_to_start_activity.setOnClickListener {
+        backToStartActivity?.setOnClickListener {
             defaultPresenter?.backToMainActivity()
         }
     }

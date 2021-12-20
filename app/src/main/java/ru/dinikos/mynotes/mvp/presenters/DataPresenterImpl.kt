@@ -1,16 +1,21 @@
 package ru.dinikos.mynotes.mvp.presenters
 
+import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.entities.Note
-import ru.dinikos.mynotes.mvp.view.DataView
 
-class DataPresenterImpl(var dataView: DataView?): DataPresenter {
+class DataPresenterImpl: DataPresenter {
+
+    private var repository: RepositoryNotes = RepositoryNotes
+    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
 
     override fun setDates(list: MutableList<Note>) {
-        dataView?.setDate(list)
+        for (listNote in list) {
+            listNotes.add(listNote)
+        }
     }
 
-    override fun getDates(): List<Note>? {
-        return dataView?.getDates()
+    override fun getDates(): MutableList<Note> {
+        return listNotes
     }
 
 }

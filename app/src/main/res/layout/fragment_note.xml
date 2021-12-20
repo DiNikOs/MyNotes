@@ -21,6 +21,7 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_padding_5"
         android:layout_centerVertical="true"
+        tools:viewBindingIgnore="true"
         app:layout_constraintTop_toTopOf="parent">
         <EditText
             android:id="@+id/noteTitle"
@@ -93,7 +94,7 @@
             app:layout_constraintStart_toStartOf="@+id/saveTextBtn"
             app:layout_constraintVertical_bias="0.2" />
         <Button
-            android:id="@+id/back_to_start_activity"
+            android:id="@+id/backToStartActivity"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
