@@ -4,42 +4,34 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_note.*
-import kotlinx.android.synthetic.main.fragment_note.*
 import kotlinx.coroutines.CoroutineScope
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.databinding.ActivityMainBinding
 import ru.dinikos.mynotes.mvp.adapters.NotesPagerAdapter
-import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 import ru.dinikos.mynotes.mvp.presenters.StartPresenter
-import java.util.*
-import kotlin.coroutines.CoroutineContext
 
-abstract class NotesPagerActivity :
-    AppCompatActivity(), CoroutineScope, BaseView, DefaultView {
+class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
 
-    private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NotesPagerAdapter
     private lateinit var viewPager: ViewPager2
 
+    private var noteTitle: EditText? = null
+    private var noteText: EditText? = null
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
+    private var toolbar_btn_save_note: AppCompatImageView? = null
 
     private var note: Note? = null
 
-    private var listNotes: List<Note>? = null
-
-    abstract val layoutRes: Int?
 
 //    private var adapter: NotesPagerAdapter? =  NotesPagerAdapter(this)
 
@@ -69,8 +61,7 @@ abstract class NotesPagerActivity :
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_note)
         init()
     }
 
@@ -81,11 +72,19 @@ abstract class NotesPagerActivity :
     private fun init() {
         startPresent = StartPresenter(this)
         defaultPresenter = DefaultPresentImpl(this)
+        adapter = NotesPagerAdapter(this)
 
-        adapter?.items = intent.getParcelableArrayListExtra(NOTES_LIST)?: listOf(Note())
-        viewPager = view_pager
+        noteTitle = findViewById(R.id.noteTitle)
+        noteText = findViewById(R.id.noteText)
+
+        viewPager = findViewById(R.id.view_pager)
         viewPager.adapter = adapter
+        adapter?.items = intent.getParcelableArrayListExtra(NOTES_LIST)?: listOf(Note())
 
+        toolbar_btn_save_note = findViewById(R.id.toolbar_btn_save_note)
+        toolbar_btn_save_note?.setOnClickListener {
+            startPresent?.toSaveText(noteTitle?.text.toString(), noteText?.text.toString())
+        }
 
 //        saveTextBtn.also{
 //            it.setOnClickListener {
@@ -148,6 +147,7 @@ abstract class NotesPagerActivity :
         super.onDestroy()
         Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
         startPresent = null
+        defaultPresenter = null
     }
 
     /**
@@ -210,10 +210,14 @@ abstract class NotesPagerActivity :
     private fun showToast(msg: String, text: String) =
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
-
-    override fun showNoteFragment(note: Note, containerViewId:Int) {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_intent_frag) + " - note: $note")
-        NoteFragment.newInstance(note).showDetails(supportFragmentManager, R.id.activity_main)
+    override fun backToMainActivity() {
+        TODO("Not yet implemented")
     }
+//
+//
+//    override fun showNoteFragment(note: Note, containerViewId:Int) {
+//        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_intent_frag) + " - note: $note")
+//        NoteFragment.newInstance(note).showFragment(supportFragmentManager)
+//    }
 
 }

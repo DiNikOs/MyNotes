@@ -11,11 +11,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
-import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.DataPresenter
 import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
-import ru.dinikos.mynotes.mvp.view.DataView
 
 /**
  * A fragment representing a list of Items.

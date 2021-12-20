@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_note"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mvp.view.NotesPagerActivity">
@@ -31,6 +33,24 @@
             android:layout_gravity="right"
             android:padding="@dimen/activity_padding_10"
             android:src="@android:drawable/ic_menu_save"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toolbar_btn_delete_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="@dimen/activity_padding_10"
+            android:src="@android:drawable/ic_menu_delete"/>
     </androidx.appcompat.widget.Toolbar>
 
+    <androidx.viewpager2.widget.ViewPager2
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_view_main"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

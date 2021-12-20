@@ -13,7 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
@@ -29,7 +29,7 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
     private var saveTextBtn: Button? = null
     private var shareDataBtn: Button? = null
     private var backToStartActivity: Button? = null
-
+    private var toolbar_btn_save_note: Button? = null
 
     private lateinit var managerFrag: FragmentManager
     private var startPresent: BasePresenter? = null
@@ -86,6 +86,7 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
         saveTextBtn = itemView.findViewById(R.id.saveTextBtn)
         shareDataBtn = itemView.findViewById(R.id.shareDataBtn)
         backToStartActivity = itemView.findViewById(R.id.backToStartActivity)
+        toolbar_btn_save_note = itemView.findViewById(R.id.toolbar_btn_save_note)
 
         noteTitle?.setText(arguments?.getString(ARG_TITLE).orEmpty())
         noteText?.setText(arguments?.getString(ARG_TEXT).orEmpty())
@@ -100,6 +101,10 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
         }
         backToStartActivity?.setOnClickListener {
             defaultPresenter?.backToMainActivity()
+        }
+
+        toolbar_btn_save_note?.setOnClickListener {
+            startPresent?.toSaveText(noteTitle?.text.toString(), noteText?.text.toString())
         }
     }
 

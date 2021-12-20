@@ -7,20 +7,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.fragments.NoteFragment
 import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
-import ru.dinikos.mynotes.mvp.presenters.BasePresenter
-import ru.dinikos.mynotes.mvp.presenters.StartPresenter
+import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 
-class MainActivityImpl : AppCompatActivity(), BaseView {
+class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
 
     private lateinit var binding: ActivityMainBinding
 
     private var startPresent: BasePresenter? = null
-
+    private var datePresenter: DataPresenter? = null
+    private var pagerPresenter: NotesPagerPresenter? = null
 
     /**
      * Вызов при первом создании Activity
@@ -40,12 +40,14 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
+        datePresenter = DataPresenterImpl()
+        pagerPresenter = NotesPagerPresenterImpl(this)
         showRecyclerFragment()
         binding.toolbarBtnAbout.setOnClickListener {
             startPresent?.operateAboutBtn()
         }
-        toolbar_btn_open_view_pager.setOnClickListener {
-                startPresent?.openPagerViewBtn()
+        binding.toolbarBtnOpenViewPager.setOnClickListener {
+            pagerPresenter?.openPagerViewBtn()
         }
     }
 
@@ -99,6 +101,8 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
         super.onDestroy()
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_destroy))
         startPresent = null
+        datePresenter = null
+        pagerPresenter = null
     }
 
     /**
@@ -152,7 +156,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
 
     override fun openPagerViewActivity() {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_openPagerView))
-        NotesPagerActivity.startActivity(this, listNotes, 0)
+        NotesPagerActivity.startActivity(this, datePresenter?.getDates(), 0)
 //        startActivity(Intent(this, NotesPagerActivity::class.java))
     }
 

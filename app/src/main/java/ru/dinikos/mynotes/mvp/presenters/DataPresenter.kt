@@ -1,6 +1,6 @@
 package ru.dinikos.mynotes.mvp.presenters
 
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 
 interface DataPresenter  {
 

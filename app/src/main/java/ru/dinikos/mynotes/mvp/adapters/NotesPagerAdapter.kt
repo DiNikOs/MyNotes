@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.view.NoteFragment
+import ru.dinikos.mynotes.mvp.fragments.NoteFragment
 
 class NotesPagerAdapter(fragmentActivity: FragmentActivity):
     FragmentStateAdapter(fragmentActivity) {

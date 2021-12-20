@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 
 class NotesRecyclerAdapter(
     val listNotes: List<Note>,
@@ -40,15 +40,5 @@ class NotesRecyclerAdapter(
                 onItemClick?.invoke(note)
             }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesRecyclerAdapter.NotesViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_main, parent, false)
-        return NotesViewHolder(itemView)
-    }
-
-    override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
-        holder.bind(listNotes[position])
     }
 }

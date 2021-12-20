@@ -1,7 +1,7 @@
 package ru.dinikos.mynotes.mvp.presenters
 
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
-import ru.dinikos.mynotes.mvp.entities.Note
 
 class DataPresenterImpl: DataPresenter {
 
