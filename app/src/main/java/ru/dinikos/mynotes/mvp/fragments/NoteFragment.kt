@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import kotlinx.android.synthetic.main.fragment_note.view.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.BasePresenter
@@ -80,13 +79,13 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
         startPresent = StartPresenter(this)
         defaultPresenter = DefaultPresentImpl(this)
 
-        noteTitle = itemView.noteTitle
-        noteText = itemView.noteText
-        noteCreateDate = itemView.noteCreateDate
+        noteTitle = itemView.findViewById(R.id.noteTitle)
+        noteText = itemView.findViewById(R.id.noteText)
+        noteCreateDate = itemView.findViewById(R.id.noteCreateDate)
 
-        saveTextBtn = itemView.saveTextBtn
-        shareDataBtn = itemView.shareDataBtn
-        backToStartActivity = itemView.backToStartActivity
+        saveTextBtn = itemView.findViewById(R.id.saveTextBtn)
+        shareDataBtn = itemView.findViewById(R.id.shareDataBtn)
+        backToStartActivity = itemView.findViewById(R.id.backToStartActivity)
 
         noteTitle?.setText(arguments?.getString(ARG_TITLE).orEmpty())
         noteText?.setText(arguments?.getString(ARG_TEXT).orEmpty())
