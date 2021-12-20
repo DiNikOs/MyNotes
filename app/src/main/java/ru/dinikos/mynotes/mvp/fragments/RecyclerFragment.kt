@@ -20,12 +20,10 @@ import ru.dinikos.mynotes.mvp.view.DataView
 /**
  * A fragment representing a list of Items.
  */
-class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
+class RecyclerFragment : Fragment(), ShowFragmentSupport {
 
     private lateinit var onClick: ((Note) -> Unit)
     private var dataPresenter: DataPresenter? = null
-    private var repository: RepositoryNotes = RepositoryNotes
-    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
 
     companion object {
 
@@ -44,7 +42,7 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
         savedInstanceState: Bundle?): View? {
         Log.d(TAG_RECYCLER_FRAG, "onCreateView")
         val view = inflater.inflate(R.layout.fragment_recycler_list, container, false)
-        dataPresenter = DataPresenterImpl(this)
+        dataPresenter = DataPresenterImpl()
         val list: List<Note>? = dataPresenter?.getDates()
         if (view is RecyclerView) {
             with(view) {
@@ -70,13 +68,4 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
         }
     }
 
-    override fun setDate(list: MutableList<Note>) {
-        for (listNote in listNotes) {
-            listNotes.add(listNote)
-        }
-    }
-
-    override fun getDates(): MutableList<Note> {
-        return listNotes
-    }
 }

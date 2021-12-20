@@ -3,8 +3,8 @@ package ru.dinikos.mynotes.mvp.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_about.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
@@ -13,7 +13,9 @@ class AboutActivity : AppCompatActivity(), DefaultView {
 
     private var defaultPresenter: DefaultPresenter? = null
 
-    /**
+    private var backToStartActivity: Button? = null
+
+            /**
      * Вызов при первом создании AboutActivity
      *
      * @param savedInstanceState  контекст для работы с Activity(ключ-значение)
@@ -30,7 +32,8 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     private fun init() {
         defaultPresenter = DefaultPresentImpl(this)
-        backToStartActivity.setOnClickListener {
+        backToStartActivity = findViewById(R.id.backToStartActivity)
+        backToStartActivity?.setOnClickListener {
             defaultPresenter?.backToMainActivity()
         }
     }
