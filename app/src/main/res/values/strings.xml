@@ -18,10 +18,15 @@
     <string name="msg_on_pause">onPause</string>
     <string name="msg_on_stop">onStop</string>
     <string name="msg_on_destroy">onDestroy</string>
+    <string name="dialog_save_title">Сохранение заметки</string>
+    <string name="msg_dialog_save">Действительно сохранить заметку?</string>
+    <string name="dialog_save_ok">Ok</string>
+    <string name="dialog_save_cancel">Cancel</string>
 
     <string name="msg_shareData">Intent shareData</string>
     <string name="msg_openAbout">Intent openAbout</string>
     <string name="msg_backToMain">Intent mainActivity</string>
+    <string name="msg_intent_frag">Intent Fragment</string>
 
     <!--Strings used for for Share Btn-->
     <string name="prompt_share_btn">Share</string>

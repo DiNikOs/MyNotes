@@ -1,4 +1,4 @@
-package ru.dinikos.mynotes.mvp.presenter
+package ru.dinikos.mynotes.mvp.presenters
 
 interface DefaultPresenter {
 

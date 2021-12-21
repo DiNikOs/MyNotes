@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
-import ru.dinikos.mynotes.mvp.presenter.BasePresenter
-import ru.dinikos.mynotes.mvp.presenter.StartPresenter
+import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.fragments.NoteFragment
+import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
+import ru.dinikos.mynotes.mvp.presenters.BasePresenter
+import ru.dinikos.mynotes.mvp.presenters.StartPresenter
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 
@@ -18,6 +20,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     private lateinit var binding: ActivityMainBinding
 
     private var startPresent: BasePresenter? = null
+
 
     /**
      * Вызов при первом создании Activity
@@ -37,20 +40,9 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        saveTextBtn.also{
-            it.setOnClickListener {
-                startPresent?.toSaveText(noteTitle.text.toString(), noteText.text.toString())
-            }
-        }
-        shareDataBtn.also {
-            it.setOnClickListener {
-                startPresent?.shareDataBtn(noteTitle.text.toString(), noteText.text.toString())
-            }
-        }
-        goAboutBtn.also {
-            it.setOnClickListener {
-               startPresent?.operateAboutBtn()
-            }
+        showRecyclerFragment()
+        binding.toolbarBtnAbout.setOnClickListener {
+            startPresent?.operateAboutBtn()
         }
     }
 
@@ -107,7 +99,6 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
      * @param text  тест заметки
      */
     override fun onSaveSuccess(title: String, text: String) {
-        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
         showToast(getString(R.string.msg_success), title)
     }
 
@@ -159,4 +150,17 @@ class MainActivityImpl : AppCompatActivity(), BaseView {
     private fun showToast(msg: String, text: String) =
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
+
+    private fun showNoteFragment(note: Note) {
+        Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
+        NoteFragment.newInstance(note)
+            .showFragment(supportFragmentManager)
+    }
+
+    private fun showRecyclerFragment() {
+        RecyclerFragment.newInstance(onItemClick = {
+            showNoteFragment(it)
+        }).showFragment(supportFragmentManager)
+    }
 }
+

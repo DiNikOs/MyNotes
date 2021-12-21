@@ -1,97 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    tools:context=".mvp.view.MainActivityImpl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".mvp.view.MainActivityImpl">
+    android:padding="@dimen/activity_padding_5"
+    android:layout_centerVertical="true"
+    app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/saveTextBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="@dimen/btn_marginTop"
-        android:layout_marginBottom="@dimen/btn_save_marginBottom"
-        android:text="@string/prompt_save_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <Button
-        android:id="@+id/shareDataBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="@dimen/btn_marginTop"
-        android:layout_marginBottom="@dimen/btn_share_marginBottom"
-        android:text="@string/prompt_share_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <Button
-        android:id="@+id/goAboutBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="@dimen/btn_marginTop"
-        android:layout_marginBottom="@dimen/btn_about_marginBottom"
-        android:text="@string/prompt_go_about_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <EditText
-        android:id="@+id/noteTitle"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_view_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        app:titleTextColor="#fcffff"
+        style="@style/Toolbar"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_padding_5"
         android:layout_centerVertical="true"
-        android:layout_marginHorizontal="@dimen/edit_text_marginHorizontal"
-        android:background="@drawable/edit_text"
-        android:ellipsize="start"
-        android:ems="10"
-        android:gravity="start"
-        android:hint="@string/prompt_title"
-        android:inputType="text"
-        android:minHeight="@dimen/edit_text_minHeight"
-        android:padding="@dimen/edit_text_padding"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <EditText
-        android:id="@+id/noteText"
+        app:title="Notes">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toolbar_btn_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="@dimen/activity_padding_5"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@android:drawable/ic_dialog_info"/>
+    </androidx.appcompat.widget.Toolbar>
+    <FrameLayout
+        android:id="@+id/container_recycler"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/edit_text_multi_height"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/edit_text_multi_marginLeft"
-        android:layout_marginTop="@dimen/edit_text_multi_marginTop"
-        android:background="@drawable/edit_text"
-        android:ellipsize="start"
-        android:ems="10"
-        android:gravity="start"
-        android:hint="@string/prompt_text"
-        android:inputType="textMultiLine"
-        android:padding="@dimen/edit_text_multi_padding"
-        android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_padding_5"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar_view_main" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
