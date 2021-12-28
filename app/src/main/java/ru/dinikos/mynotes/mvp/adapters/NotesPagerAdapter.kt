@@ -11,9 +11,12 @@ class NotesPagerAdapter(fragmentActivity: FragmentActivity):
 
     var items: List<Note> = emptyList()
 
+    lateinit var note:Note
+
     override fun getItemCount(): Int = items.size
 
     override fun createFragment(position: Int): Fragment {
-        return NoteFragment.newInstance(items[position])
+        note = items[position]
+        return NoteFragment.newInstance(note)
     }
 }

@@ -12,7 +12,8 @@ import ru.dinikos.mynotes.mvp.data.entities.Note
 
 class NotesRecyclerAdapter(
     val listNotes: List<Note>,
-    var onItemClick: ((Note) -> Unit)? = null
+    var onItemClick: ((Note) -> Unit)? = null,
+    var onPosition: ((Int) -> Unit)? = null
 ) : RecyclerView.Adapter<NotesRecyclerAdapter.NotesViewHolder>() {
 
     override fun getItemCount(): Int = listNotes.count()
@@ -38,6 +39,7 @@ class NotesRecyclerAdapter(
                 var position = adapterPosition
                 Log.d("RecyclerAdapter",  " [adapterPosition: $position ]")
                 onItemClick?.invoke(note)
+                onPosition?.invoke(position)
             }
         }
     }

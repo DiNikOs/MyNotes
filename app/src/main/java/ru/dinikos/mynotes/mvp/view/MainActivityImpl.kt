@@ -5,22 +5,25 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
+import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.fragments.NoteFragment
 import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
 import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 
-class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
+
+class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView {
 
     private lateinit var binding: ActivityMainBinding
 
     private var startPresent: BasePresenter? = null
-    private var datePresenter: DataPresenter? = null
+    private var dataPresenter: DataPresenter? = null
     private var pagerPresenter: NotesPagerPresenter? = null
+    private var database:AppDatabase? = null
 
     /**
      * Вызов при первом создании Activity
@@ -40,22 +43,18 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        datePresenter = DataPresenterImpl()
+        database =  AppDatabase.getDataBase(context = this)
+        dataPresenter = DataPresenterImpl(this, AppDatabase.getDataBase(this))
+
         pagerPresenter = NotesPagerPresenterImpl(this)
         showRecyclerFragment()
         binding.toolbarBtnAbout.setOnClickListener {
             startPresent?.operateAboutBtn()
         }
-        binding.toolbarBtnOpenViewPager.setOnClickListener {
+        binding.toolbarBtnAddNote.setOnClickListener {
             pagerPresenter?.openPagerViewBtn()
         }
     }
-
-//    private val notesAdapter: NotesPagerAdapter by lazy {
-//        NotesPagerAdapter {
-//            NotesPagerActivity.startActivity(this, listNotes, 0)
-//        }
-//    }
 
     /**
      * Вызов перед открытием Activity
@@ -101,18 +100,12 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
         super.onDestroy()
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_destroy))
         startPresent = null
-        datePresenter = null
+        dataPresenter = null
         pagerPresenter = null
     }
 
-    /**
-     * Действие при успешном сохранении
-     *
-     * @param title  заголовок заметки
-     * @param text  тест заметки
-     */
-    override fun onSaveSuccess(title: String, text: String) {
-        showToast(getString(R.string.msg_success), title)
+    override fun onSaveSuccessNote(note: Note) {
+        TODO("Not yet implemented")
     }
 
     /**
@@ -154,10 +147,14 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
         startActivity(Intent(this, AboutActivity::class.java))
     }
 
-    override fun openPagerViewActivity() {
+    /**
+     * Open PagerView Activity
+     *
+     * @param note - open item in PagerView
+     */
+    override fun openPagerViewActivity(note: Note?, position: Int?) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_openPagerView))
-        NotesPagerActivity.startActivity(this, datePresenter?.getDates(), 0)
-//        startActivity(Intent(this, NotesPagerActivity::class.java))
+        NotesPagerActivity.startActivity(this, position)
     }
 
     /**
@@ -170,16 +167,39 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
 
-    private fun showNoteFragment(note: Note) {
+    private fun showNoteFragment(note: Note, position:Int) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
-        NoteFragment.newInstance(note)
-            .showFragment(supportFragmentManager)
+        openPagerViewActivity(note, position)
     }
 
     private fun showRecyclerFragment() {
+        var note:Note? = null
         RecyclerFragment.newInstance(onItemClick = {
-            showNoteFragment(it)
+            note = it
+        }, position = {
+            note?.let { it2 -> showNoteFragment(it2, it) }
         }).showFragment(supportFragmentManager)
     }
+
+    override fun setDate(list: MutableList<Note>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getDates(): MutableList<Note> {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadAllNotes(): Flow<List<Note>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun insertNote(note: Note): Long {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteNote(note: Note) {
+        TODO("Not yet implemented")
+    }
+
 }
 

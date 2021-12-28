@@ -4,52 +4,40 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.adapters.NotesPagerAdapter
+import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.presenters.BasePresenter
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
-import ru.dinikos.mynotes.mvp.presenters.StartPresenter
+import ru.dinikos.mynotes.mvp.presenters.*
+import java.util.*
 
 class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
 
     private lateinit var adapter: NotesPagerAdapter
     private lateinit var viewPager: ViewPager2
 
-    private var noteTitle: EditText? = null
-    private var noteText: EditText? = null
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
-    private var toolbar_btn_save_note: AppCompatImageView? = null
+    private var dataPresenter: DataPresenter? = null
 
     private var note: Note? = null
 
 
-//    private var adapter: NotesPagerAdapter? =  NotesPagerAdapter(this)
-
     companion object {
         private const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
         private const val SELECTED_POSITION = "selectedPosition"
-        private const val NOTES_LIST = "notesList"
 
         fun startActivity(
             context: Context,
-            notesList: List<Note>? = null,
-            selectPosition: Int = 0
+            selectPosition: Int? = null
         ) {
             val intent = Intent(context, NotesPagerActivity::class.java)
-
-            notesList?.let {
-                intent.putParcelableArrayListExtra(NOTES_LIST, ArrayList(notesList))
-            }
+            intent.putExtra(SELECTED_POSITION, selectPosition)
             context.startActivity(intent)
         }
     }
@@ -72,35 +60,38 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
     private fun init() {
         startPresent = StartPresenter(this)
         defaultPresenter = DefaultPresentImpl(this)
-        adapter = NotesPagerAdapter(this)
 
-        noteTitle = findViewById(R.id.noteTitle)
-        noteText = findViewById(R.id.noteText)
-
+        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
         viewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = adapter
-        adapter?.items = intent.getParcelableArrayListExtra(NOTES_LIST)?: listOf(Note())
+        adapter = NotesPagerAdapter(this)
+        var position: Int = intent.getIntExtra(SELECTED_POSITION, -1)
 
-        toolbar_btn_save_note = findViewById(R.id.toolbar_btn_save_note)
-        toolbar_btn_save_note?.setOnClickListener {
-            startPresent?.toSaveText(noteTitle?.text.toString(), noteText?.text.toString())
+        if (position == -1) {
+            lifecycleScope.launch {
+                dataPresenter?.insertNote(
+                    Note(
+                        null,
+                        "",
+                        "",
+                        Date().toString(),
+                        Date().toString()
+                    )
+                )
+            }
         }
+        var positionStart: Int = position
 
-//        saveTextBtn.also{
-//            it.setOnClickListener {
-//                startPresent?.toSaveText(noteTitle.text.toString(), noteText.text.toString())
-//            }
-//        }
-//        shareDataBtn.also {
-//            it.setOnClickListener {
-//                startPresent?.shareDataBtn(noteTitle.text.toString(), noteText.text.toString())
-//            }
-//        }
-//        back_to_start_activity.also {
-//            it.setOnClickListener {
-//                defaultPresenter?.backToMainActivity()
-//            }
-//        }
+        lifecycleScope.launch {
+            dataPresenter?.getAll()?.collect {
+                if(position == -1) {
+                    positionStart = it?.size
+                }
+                adapter.items = it
+                viewPager.adapter = adapter
+                viewPager.currentItem = positionStart
+            }
+        }
+        Log.d(TAG_NOTE_ACTIVITY, "Adapter Position: ${viewPager.currentItem} ; Note: $note ")
     }
 
     /**
@@ -150,16 +141,8 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
         defaultPresenter = null
     }
 
-    /**
-     * Действие при успешном сохранении
-     *
-     * @param title  заголовок заметки
-     * @param text  тест заметки
-     */
-    override fun onSaveSuccess(title: String, text: String) {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_success) + " title:" + title)
-//        listNotes.add(Note(notesList.size.toLong(), title, text, Date(), Date()))
-        showToast(getString(R.string.msg_success), title)
+    override fun onSaveSuccessNote(note: Note) {
+        TODO("Not yet implemented")
     }
 
     /**
@@ -213,11 +196,5 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
     override fun backToMainActivity() {
         TODO("Not yet implemented")
     }
-//
-//
-//    override fun showNoteFragment(note: Note, containerViewId:Int) {
-//        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_intent_frag) + " - note: $note")
-//        NoteFragment.newInstance(note).showFragment(supportFragmentManager)
-//    }
 
 }

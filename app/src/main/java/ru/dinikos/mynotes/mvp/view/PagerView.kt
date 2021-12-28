@@ -2,8 +2,7 @@ package ru.dinikos.mynotes.mvp.view
 
 import ru.dinikos.mynotes.mvp.data.entities.Note
 
-interface NotesPagerView {
+interface PagerView {
 
-    fun openPagerViewActivity(note: Note?, position: Int?)
-
+    fun getPagerData(): Note
 }

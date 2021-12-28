@@ -23,6 +23,46 @@
         android:layout_centerVertical="true"
         tools:viewBindingIgnore="true"
         app:layout_constraintTop_toTopOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_view_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/Toolbar"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="#fcffff"
+            app:title="Item note">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toolbar_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/toolbar_text_size"
+                android:textStyle="bold"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/toolbar_btn_save_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="@dimen/activity_padding_10"
+                android:src="@android:drawable/ic_menu_save"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/share_data_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="@dimen/activity_padding_10"
+                android:src="@android:drawable/ic_dialog_email"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/toolbar_btn_delete_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="@dimen/activity_padding_10"
+                android:src="@android:drawable/ic_menu_delete"/>
+        </androidx.appcompat.widget.Toolbar>
         <EditText
             android:id="@+id/noteTitle"
             android:layout_width="match_parent"
@@ -73,36 +113,9 @@
             style="@style/TextViewStyle"
             android:hint="@string/prompt_text"
             app:layout_constraintBottom_toBottomOf="@+id/noteText"
-            tools:text="note date" />
-        <Button
-            android:id="@+id/saveTextBtn"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/btn_marginTop"
-            android:text="@string/prompt_save_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
-        <Button
-            android:id="@+id/shareDataBtn"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/btn_marginTop"
-            android:text="@string/prompt_share_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/saveTextBtn"
-            app:layout_constraintVertical_bias="0.2" />
-        <Button
-            android:id="@+id/backToStartActivity"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/btn_marginTop"
-            android:text="@string/about_back_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/shareDataBtn"
-            app:layout_constraintVertical_bias="0.2" />
+            android:labelFor="@+id/noteCreateDate"
+            tools:text="note date:" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

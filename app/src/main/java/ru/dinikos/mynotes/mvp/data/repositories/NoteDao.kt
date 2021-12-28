@@ -1,5 +1,4 @@
 package ru.dinikos.mynotes.mvp.data.repositories
-
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.mvp.data.entities.Note
@@ -8,19 +7,24 @@ import ru.dinikos.mynotes.mvp.data.entities.Note
 interface NoteDao {
 
     @Query("SELECT * FROM notes")
-    fun getAll(): Flow<List<Note>>
+    fun loadAll(): Flow<List<Note>>
 
-    @Query("SELECT * FROM notes WHERE note_title LIKE :title LIMIT 1")
-    suspend fun findByTitleName(title: String): Note
+//    @Query("SELECT * FROM notes WHERE notes.note_title LIKE :title LIMIT 1")
+//    fun findByTitleName(title: String): Note
 
     @Insert
-    suspend fun insert(note: Note): Long
+    fun insert(note: Note): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNotes(listNote: List<Note>)
 
     @Update
-    suspend fun update(note: Note)
+    fun update(note: Note)
 
     @Delete
-    suspend fun delete(note:Note)
+    fun delete(note:Note)
 
+    @Delete
+    fun deleteAll(listNote: List<Note>)
 
 }

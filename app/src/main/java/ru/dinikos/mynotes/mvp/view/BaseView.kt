@@ -1,5 +1,7 @@
 package ru.dinikos.mynotes.mvp.view
 
+import ru.dinikos.mynotes.mvp.data.entities.Note
+
 interface BaseView {
 
     companion object {
@@ -8,7 +10,7 @@ interface BaseView {
         const val TYPE_SHARE = "text/plain"
     }
 
-    fun onSaveSuccess(title: String, text: String)
+    fun onSaveSuccessNote(note: Note)
 
     fun onSaveError(text: String)
 

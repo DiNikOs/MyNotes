@@ -6,48 +6,46 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import ru.dinikos.mynotes.R
+import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.presenters.BasePresenter
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
-import ru.dinikos.mynotes.mvp.presenters.StartPresenter
+import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.BaseView
 import ru.dinikos.mynotes.mvp.view.DefaultView
+import ru.dinikos.mynotes.mvp.view.PagerView
 
-class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
+class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, PagerView {
 
     private var noteTitle: EditText? = null
     private var noteText: EditText? = null
     private var noteCreateDate: TextView? = null
-    private var saveTextBtn: Button? = null
-    private var shareDataBtn: Button? = null
-    private var backToStartActivity: Button? = null
-    private var toolbar_btn_save_note: Button? = null
+    private var shareDataBtn: AppCompatImageView? = null
+    private var toolbarBtnSaveNote: AppCompatImageView? = null
+    private var toolbarBtnDelNote: AppCompatImageView? = null
 
     private lateinit var managerFrag: FragmentManager
     private var startPresent: BasePresenter? = null
     private var defaultPresenter: DefaultPresenter? = null
+    private var dataPresenter: DataPresenter? = null
 
     companion object {
 
         const val TAG_NOTE_FRAG = "NoteFragment TAG"
-        const val ARG_TITLE = "titleNoteTxt"
-        const val ARG_TEXT = "textNoteTxt"
-        const val ARG_CREATE_DATE = "createDateNoteTxt"
+        const val ARG_NOTE = "note"
 
         fun newInstance(note: Note): NoteFragment {
             val fragment = NoteFragment()
             fragment.arguments = bundleOf(
-                ARG_TITLE to note.title,
-                ARG_TEXT to note.text,
-                ARG_CREATE_DATE to note.createDate.toString())
+            ARG_NOTE to note
+            )
             return fragment
         }
     }
@@ -78,33 +76,39 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
         Log.d(TAG_NOTE_FRAG, "onViewCreated")
         startPresent = StartPresenter(this)
         defaultPresenter = DefaultPresentImpl(this)
+        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
 
         noteTitle = itemView.findViewById(R.id.noteTitle)
         noteText = itemView.findViewById(R.id.noteText)
         noteCreateDate = itemView.findViewById(R.id.noteCreateDate)
 
-        saveTextBtn = itemView.findViewById(R.id.saveTextBtn)
-        shareDataBtn = itemView.findViewById(R.id.shareDataBtn)
-        backToStartActivity = itemView.findViewById(R.id.backToStartActivity)
-        toolbar_btn_save_note = itemView.findViewById(R.id.toolbar_btn_save_note)
+        shareDataBtn = itemView.findViewById(R.id.share_data_btn)
+        toolbarBtnSaveNote = itemView.findViewById(R.id.toolbar_btn_save_note)
+        toolbarBtnDelNote = itemView.findViewById(R.id.toolbar_btn_delete_note)
 
-        noteTitle?.setText(arguments?.getString(ARG_TITLE).orEmpty())
-        noteText?.setText(arguments?.getString(ARG_TEXT).orEmpty())
-        noteCreateDate?.text = arguments?.getString(ARG_CREATE_DATE).orEmpty()
+        var note:Note = arguments?.get(ARG_NOTE) as Note
 
-        saveTextBtn?.setOnClickListener {
-            startPresent?.toSaveText(noteTitle?.text.toString(), noteText?.text.toString())
-        }
+        noteTitle?.setText(note.title)
+        noteText?.setText(note.text)
+        noteCreateDate?.text = note.createDate
 
         shareDataBtn?.setOnClickListener {
-            startPresent?.shareDataBtn(noteTitle?.text.toString(), noteText?.text.toString())
-        }
-        backToStartActivity?.setOnClickListener {
-            defaultPresenter?.backToMainActivity()
+            var noteTitle = noteTitle?.text.toString()
+            Log.d(TAG_NOTE_FRAG, "shareDataBtn noteTitle: $noteTitle")
+            startPresent?.shareDataBtn(noteTitle, noteText?.text.toString())
         }
 
-        toolbar_btn_save_note?.setOnClickListener {
-            startPresent?.toSaveText(noteTitle?.text.toString(), noteText?.text.toString())
+        toolbarBtnSaveNote?.setOnClickListener {
+            note.title = noteTitle?.text.toString()
+            note.text = noteText?.text.toString()
+            Log.d(TAG_NOTE_FRAG, " toolbarBtnSaveNote: $note")
+            startPresent?.toSaveNote(note)
+        }
+
+        toolbarBtnDelNote?.setOnClickListener {
+            lifecycleScope.launch {
+                dataPresenter?.deleteNote(note)
+            }
         }
     }
 
@@ -130,8 +134,8 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
         managerFrag.popBackStack()
     }
 
-    override fun onSaveSuccess(title: String, text: String) {
-        Log.d(BaseView.TAG_MAIN_VIEW, getString(R.string.msg_success) + " title:" + title)
+    override fun onSaveSuccessNote(note: Note) {
+        showSelectionDialog(note)
     }
 
     override fun onSaveError(text: String) {
@@ -139,7 +143,8 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
     }
 
     override fun onAttemptSaveBlankText(text: String) {
-        TODO("Not yet implemented")
+        Log.d(BaseView.TAG_MAIN_VIEW, getString(R.string.msg_error_save_text))
+        showWarningDialog()
     }
 
     override fun shareData(title: String, text: String) {
@@ -152,6 +157,25 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView {
 
     override fun openAboutActivity() {
         TODO("Not yet implemented")
+    }
+
+    override fun getPagerData(): Note {
+        return arguments?.get(ARG_NOTE) as Note
+    }
+
+    private fun showWarningDialog() {
+        WarningDialog().show(this.parentFragmentManager, WarningDialog.TAG)
+    }
+
+    private fun showSelectionDialog(note: Note) {
+        AskToSaveDialog.createInstance(note).show(this.parentFragmentManager, AskToSaveDialog.TAG)
+    }
+
+    fun okClicked(note: Note) {
+        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
+        lifecycleScope.launch {
+            dataPresenter?.updateNote(note)
+        }
     }
 
 }
