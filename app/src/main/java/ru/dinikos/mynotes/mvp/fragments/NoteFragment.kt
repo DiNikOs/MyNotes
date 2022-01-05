@@ -173,8 +173,14 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
 
     fun okClicked(note: Note) {
         dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
-        lifecycleScope.launch {
-            dataPresenter?.updateNote(note)
+        if(note.noteId == null) {
+            lifecycleScope.launch {
+                dataPresenter?.insertNote(note)
+            }
+        } else {
+            lifecycleScope.launch {
+                dataPresenter?.updateNote(note)
+            }
         }
     }
 

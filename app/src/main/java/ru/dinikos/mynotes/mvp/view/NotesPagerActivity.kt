@@ -66,27 +66,22 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
         adapter = NotesPagerAdapter(this)
         var position: Int = intent.getIntExtra(SELECTED_POSITION, -1)
 
-        if (position == -1) {
-            lifecycleScope.launch {
-                dataPresenter?.insertNote(
-                    Note(
+        var positionStart: Int = position
+
+        lifecycleScope.launch {
+            dataPresenter?.getAll()?.collect {
+                var list: MutableList<Note> = it.toMutableList()
+                if(position == -1) {
+                    positionStart = it?.size - 1
+                    list.add(Note(
                         null,
                         "",
                         "",
                         Date().toString(),
                         Date().toString()
-                    )
-                )
-            }
-        }
-        var positionStart: Int = position
-
-        lifecycleScope.launch {
-            dataPresenter?.getAll()?.collect {
-                if(position == -1) {
-                    positionStart = it?.size
+                    ))
                 }
-                adapter.items = it
+                adapter.items = list
                 viewPager.adapter = adapter
                 viewPager.currentItem = positionStart
             }
