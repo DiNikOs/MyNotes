@@ -31,7 +31,6 @@
             style="@style/Toolbar"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="#fcffff"
             app:title="Item note">
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/toolbar_text_view"
