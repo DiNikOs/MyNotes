@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.coroutines.launch
@@ -51,6 +52,7 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
         init()
+        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     }
 
     /**
