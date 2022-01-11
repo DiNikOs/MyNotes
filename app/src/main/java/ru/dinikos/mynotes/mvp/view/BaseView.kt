@@ -12,6 +12,8 @@ interface BaseView {
 
     fun onSaveSuccessNote(note: Note)
 
+    fun onDeleteNote(note: Note)
+
     fun onSaveError(text: String)
 
     fun onAttemptSaveBlankText(text: String)

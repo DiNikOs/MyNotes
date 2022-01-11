@@ -10,6 +10,8 @@ interface BasePresenter {
 
     fun toSaveNote(note: Note)
 
+    fun deleteNote(note: Note)
+
     fun saveNote(note: Note)
 
     fun shareDataBtn(noteTitle: String, editText: String)

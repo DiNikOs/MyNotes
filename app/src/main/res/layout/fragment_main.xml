@@ -4,27 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingHorizontal="8dp"
-    android:paddingVertical="4dp">
+    android:paddingHorizontal="@dimen/activity_padding_5"
+    android:paddingVertical="@dimen/activity_padding_1">
 
     <TextView
         android:id="@+id/txtTitleNote"
         style="@style/TextViewStyle"
         android:gravity="start"
-        android:textColor="@android:color/black"
         android:textStyle="bold"
+        android:hint="@string/prompt_title"
+        android:paddingHorizontal="@dimen/activity_padding_5"
         tools:text="title" />
     <TextView
         android:id="@+id/txtTextNote"
         style="@style/TextViewStyle"
-        android:hint="@string/prompt_title"
+        android:hint="@string/prompt_text"
+        android:paddingHorizontal="@dimen/activity_padding_5"
         tools:text="note text" />
     <TextView
         android:id="@+id/txtCreateDateNote"
         style="@style/TextViewStyle"
-        android:hint="@string/prompt_text"
+        android:hint="@string/prompt_date"
+        android:paddingHorizontal="@dimen/activity_padding_5"
         tools:text="note date" />
 
 </LinearLayout>

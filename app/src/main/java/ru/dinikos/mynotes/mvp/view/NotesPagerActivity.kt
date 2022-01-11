@@ -74,7 +74,7 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
             dataPresenter?.getAll()?.collect {
                 var list: MutableList<Note> = it.toMutableList()
                 if(position == -1) {
-                    positionStart = it?.size - 1
+                    positionStart = it?.size
                     list.add(Note(
                         null,
                         "",
@@ -139,6 +139,10 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
     }
 
     override fun onSaveSuccessNote(note: Note) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteNote(note: Note) {
         TODO("Not yet implemented")
     }
 

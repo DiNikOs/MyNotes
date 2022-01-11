@@ -110,6 +110,10 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView
         TODO("Not yet implemented")
     }
 
+    override fun onDeleteNote(note: Note) {
+        TODO("Not yet implemented")
+    }
+
     /**
      * Действие при не успешном сохранении
      *

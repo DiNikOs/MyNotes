@@ -92,6 +92,13 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
         noteText?.setText(note.text)
         noteCreateDate?.text = note.createDate
 
+        if(note.noteId == null) {
+            toolbarBtnDelNote?.visibility = View.INVISIBLE
+            shareDataBtn?.visibility = View.INVISIBLE
+            noteTitle?.setText("")
+            noteText?.setText("")
+        }
+
         shareDataBtn?.setOnClickListener {
             var noteTitle = noteTitle?.text.toString()
             Log.d(TAG_NOTE_FRAG, "shareDataBtn noteTitle: $noteTitle")
@@ -106,9 +113,7 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
         }
 
         toolbarBtnDelNote?.setOnClickListener {
-            lifecycleScope.launch {
-                dataPresenter?.deleteNote(note)
-            }
+            startPresent?.deleteNote(note)
         }
     }
 
@@ -136,6 +141,10 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
 
     override fun onSaveSuccessNote(note: Note) {
         showSelectionDialog(note)
+    }
+
+    override fun onDeleteNote(note: Note) {
+        showSelectionDialogDelete(note)
     }
 
     override fun onSaveError(text: String) {
@@ -168,10 +177,14 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
     }
 
     private fun showSelectionDialog(note: Note) {
-        AskToSaveDialog.createInstance(note).show(this.parentFragmentManager, AskToSaveDialog.TAG)
+        AskToSaveDialog.createInstance { okClickedSave(note) }.show(this.parentFragmentManager, AskToSaveDialog.TAG)
     }
 
-    fun okClicked(note: Note) {
+    private fun showSelectionDialogDelete(note: Note) {
+        AskToDeleteDialog.createInstance { okClickedDelete(note) }.show(this.parentFragmentManager, AskToDeleteDialog.TAG)
+    }
+
+    private fun okClickedSave(note: Note) {
         dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
         if(note.noteId == null) {
             lifecycleScope.launch {
@@ -180,6 +193,15 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
         } else {
             lifecycleScope.launch {
                 dataPresenter?.updateNote(note)
+            }
+        }
+    }
+
+    private fun okClickedDelete(note: Note) {
+        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
+        if(note.noteId != null) {
+            lifecycleScope.launch {
+                dataPresenter?.deleteNote(note)
             }
         }
     }

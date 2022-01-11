@@ -26,6 +26,15 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
     }
 
     /**
+     * Удаление заметки
+     *
+     * @param note заметка для удаления
+     */
+    override fun deleteNote(note:Note) {
+        view?.onDeleteNote(note)
+    }
+
+    /**
      * Обработка действий с заметкой по отправке в сторонние ресурсы
      *
      * @param noteTitle  заголовок заметки
