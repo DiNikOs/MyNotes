@@ -88,16 +88,17 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
 
         var note:Note = arguments?.get(ARG_NOTE) as Note
 
-        noteTitle?.setText(note.title)
-        noteText?.setText(note.text)
-        noteCreateDate?.text = note.createDate
-
         if(note.noteId == null) {
             toolbarBtnDelNote?.visibility = View.INVISIBLE
             shareDataBtn?.visibility = View.INVISIBLE
             noteTitle?.setText("")
             noteText?.setText("")
+        } else {
+            noteTitle?.setText(note.title)
+            noteText?.setText(note.text)
         }
+
+        noteCreateDate?.text = note.createDate
 
         shareDataBtn?.setOnClickListener {
             var noteTitle = noteTitle?.text.toString()
