@@ -26,9 +26,6 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
     private var defaultPresenter: DefaultPresenter? = null
     private var dataPresenter: DataPresenter? = null
 
-    private var note: Note? = null
-
-
     companion object {
         private const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
         private const val SELECTED_POSITION = "selectedPosition"
@@ -88,7 +85,6 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
                 viewPager.currentItem = positionStart
             }
         }
-        Log.d(TAG_NOTE_ACTIVITY, "Adapter Position: ${viewPager.currentItem} ; Note: $note ")
     }
 
     /**
