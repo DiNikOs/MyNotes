@@ -30,7 +30,7 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
         private const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
         private const val SELECTED_POSITION = "selectedPosition"
 
-        fun startActivity(
+        fun startNotePagerActivity(
             context: Context,
             selectPosition: Int? = null
         ) {
@@ -46,10 +46,12 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
      * @param savedInstanceState  контекст для работы с Activity(ключ-значение)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
         init()
-        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     }
 
     /**
@@ -59,7 +61,6 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
     private fun init() {
         startPresent = StartPresenter(this)
         defaultPresenter = DefaultPresentImpl(this)
-
         dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
         viewPager = findViewById(R.id.view_pager)
         adapter = NotesPagerAdapter(this)
@@ -71,7 +72,7 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
             dataPresenter?.getAll()?.collect {
                 var list: MutableList<Note> = it.toMutableList()
                 if(position == -1) {
-                    positionStart = it?.size
+                    positionStart = 0
                     list.add(Note(
                         null,
                         "",
@@ -80,6 +81,7 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
                         Date().toString()
                     ))
                 }
+                list.reverse()
                 adapter.items = list
                 viewPager.adapter = adapter
                 viewPager.currentItem = positionStart
@@ -191,7 +193,8 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
     override fun backToMainActivity() {
-        TODO("Not yet implemented")
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_backToMain))
+        onBackPressed()
     }
 
 }

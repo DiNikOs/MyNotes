@@ -44,5 +44,12 @@
     <!--  Strings used for Dialog-->
     <string name="warning_dialog_text">Ошибка</string>
     <string name="warning_ok">Ok</string>
+    <string name="toolbar_add">Добавить</string>
+    <string name="toolbar_about">Об приложении</string>
+    <string name="toolbar_save">Сохранить</string>
+    <string name="toolbar_share">Передать</string>
+    <string name="toolbar_delete">Удалить</string>
+    <string name="title_activity_note">Item note</string>
+    <string name="title_activity_main">Notes</string>
 
 </resources>

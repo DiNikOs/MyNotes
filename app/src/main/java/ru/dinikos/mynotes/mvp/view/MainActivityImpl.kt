@@ -32,11 +32,14 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView
      * @param savedInstanceState  контекст для работы с Activity(ключ-значение)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            recreate()
+        }
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
-        delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     }
 
     /**
@@ -45,7 +48,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        database =  AppDatabase.getDataBase(context = this)
+        database =  AppDatabase.getDataBase(this)
         dataPresenter = DataPresenterImpl(this, AppDatabase.getDataBase(this))
 
         pagerPresenter = NotesPagerPresenterImpl(this)
@@ -160,7 +163,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView
      */
     override fun openPagerViewActivity(note: Note?, position: Int?) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_openPagerView))
-        NotesPagerActivity.startActivity(this, position)
+        NotesPagerActivity.startNotePagerActivity(this, position)
     }
 
     /**

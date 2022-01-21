@@ -3,7 +3,6 @@ package ru.dinikos.mynotes.mvp.fragments
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import ru.dinikos.mynotes.R
 
@@ -22,6 +21,10 @@ class AskToDeleteDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // закрытие диалога при смене темы
+        if (savedInstanceState != null) {
+            dismiss()
+        }
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle(R.string.dialog_delete_title)
@@ -30,10 +33,6 @@ class AskToDeleteDialog : DialogFragment() {
                 .setPositiveButton(R.string.dialog_ok)
                 { _, _ ->
                     onDelete?.invoke()
-                    Toast.makeText(
-                        this.activity, getString(R.string.msg_delete_success_ok),
-                        Toast.LENGTH_LONG
-                    ).show()
                 }
                 .setNegativeButton(R.string.dialog_cancel)
                 { dialog, _ ->

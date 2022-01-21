@@ -56,10 +56,10 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
 
         if (view is RecyclerView) {
             with(view) {
-                layoutManager = LinearLayoutManager(context)//
+                layoutManager = LinearLayoutManager(context)
                 lifecycleScope.launch {
                     dataPresenter?.getAll()?.collect {
-                        view.adapter = NotesRecyclerAdapter(it, onClick, onPosition)
+                        view.adapter = NotesRecyclerAdapter(it.reversed(), onClick, onPosition)
                     }
                 }
             }

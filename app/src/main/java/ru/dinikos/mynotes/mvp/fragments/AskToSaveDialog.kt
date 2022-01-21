@@ -3,11 +3,8 @@ package ru.dinikos.mynotes.mvp.fragments
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.data.entities.Note
 
 class AskToSaveDialog: DialogFragment() {
 
@@ -24,6 +21,10 @@ class AskToSaveDialog: DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // закрытие диалога при смене темы
+        if (savedInstanceState != null) {
+            dismiss()
+        }
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle(R.string.dialog_save_title)
@@ -32,10 +33,6 @@ class AskToSaveDialog: DialogFragment() {
                 .setPositiveButton(R.string.dialog_ok)
                 { _, _ ->
                     onSave?.invoke()
-                    Toast.makeText(
-                        this.activity, getString(R.string.msg_success_ok),
-                        Toast.LENGTH_LONG
-                    ).show()
                 }
                 .setNegativeButton(R.string.dialog_cancel)
                      { dialog, _ ->

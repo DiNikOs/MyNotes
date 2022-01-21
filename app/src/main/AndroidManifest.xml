@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/Theme.MyNotes">
         <activity
             android:name=".mvp.view.AboutActivity"
@@ -15,7 +16,7 @@
         <activity
             android:name=".mvp.view.MainActivityImpl"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_main"
             android:theme="@style/Theme.MyNotes.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,7 @@
         <activity
             android:name=".mvp.view.NotesPagerActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_note"
             android:theme="@style/Theme.MyNotes.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

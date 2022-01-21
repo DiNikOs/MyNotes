@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -56,7 +57,9 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG_NOTE_FRAG, "onCreateView")
-        return inflater.inflate(R.layout.fragment_note, container, false)
+
+        var view = inflater.inflate(R.layout.fragment_note, container, false)
+        return view
     }
 
     override fun onDestroyView() {
@@ -111,10 +114,12 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
             note.text = noteText?.text.toString()
             Log.d(TAG_NOTE_FRAG, " toolbarBtnSaveNote: $note")
             startPresent?.toSaveNote(note)
+            activity?.onContentChanged()
         }
 
         toolbarBtnDelNote?.setOnClickListener {
             startPresent?.deleteNote(note)
+            activity?.onContentChanged()
         }
     }
 
@@ -178,29 +183,39 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
     }
 
     private fun showSelectionDialog(note: Note) {
-        AskToSaveDialog.createInstance { okClickedSave(note) }.show(this.parentFragmentManager, AskToSaveDialog.TAG)
+        AskToSaveDialog.createInstance { okClickedSave(note) }
+            .show(requireActivity().supportFragmentManager, AskToSaveDialog.TAG)
     }
 
     private fun showSelectionDialogDelete(note: Note) {
-        AskToDeleteDialog.createInstance { okClickedDelete(note) }.show(this.parentFragmentManager, AskToDeleteDialog.TAG)
+        AskToDeleteDialog.createInstance { okClickedDelete(note) }
+            .show(requireActivity().supportFragmentManager, AskToDeleteDialog.TAG)
     }
 
     private fun okClickedSave(note: Note) {
-        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
         if(note.noteId == null) {
             lifecycleScope.launch {
                 dataPresenter?.insertNote(note)
             }
+            // возврат на главный экран со списком при сохранении новой записи.
+            activity?.onBackPressed()
         } else {
             lifecycleScope.launch {
                 dataPresenter?.updateNote(note)
             }
         }
+        Toast.makeText(
+            this.activity, getString(R.string.msg_success_ok),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun okClickedDelete(note: Note) {
-        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
         if(note.noteId != null) {
+            Toast.makeText(
+                this.activity, getString(R.string.msg_delete_success_ok),
+                Toast.LENGTH_LONG
+            ).show()
             lifecycleScope.launch {
                 dataPresenter?.deleteNote(note)
             }

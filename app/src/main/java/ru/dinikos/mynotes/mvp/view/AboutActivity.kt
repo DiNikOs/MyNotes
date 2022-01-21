@@ -1,10 +1,10 @@
 package ru.dinikos.mynotes.mvp.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
 import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
@@ -15,12 +15,15 @@ class AboutActivity : AppCompatActivity(), DefaultView {
 
     private var backToStartActivity: Button? = null
 
-            /**
+    /**
      * Вызов при первом создании AboutActivity
      *
      * @param savedInstanceState  контекст для работы с Activity(ключ-значение)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         init()
@@ -90,6 +93,6 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     override fun backToMainActivity() {
         Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_backToMain))
-        startActivity(Intent(this, MainActivityImpl::class.java))
+        onBackPressed()
     }
 }

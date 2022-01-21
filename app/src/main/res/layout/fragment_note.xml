@@ -29,7 +29,7 @@
             style="@style/Toolbar"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="Item note">
+            app:title="@string/title_activity_note">
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/toolbar_text_view"
                 android:layout_width="wrap_content"
@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:padding="@dimen/activity_padding_10"
+                android:title="@string/toolbar_save"
                 android:src="@android:drawable/ic_menu_save"/>
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/share_data_btn"
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:padding="@dimen/activity_padding_10"
+                android:title="@string/toolbar_share"
                 android:src="@android:drawable/ic_dialog_email"/>
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/toolbar_btn_delete_note"
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:padding="@dimen/activity_padding_10"
+                android:title="@string/toolbar_delete"
                 android:src="@android:drawable/ic_menu_delete"/>
         </androidx.appcompat.widget.Toolbar>
         <EditText
