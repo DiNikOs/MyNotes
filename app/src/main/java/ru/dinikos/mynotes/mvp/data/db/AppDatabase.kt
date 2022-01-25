@@ -38,17 +38,4 @@ abstract class AppDatabase: RoomDatabase() {
             return instanceDatabase?.let { it }
         }
     }
-
-
-    override fun createOpenHelper(config: DatabaseConfiguration?): SupportSQLiteOpenHelper {
-        TODO("Not yet implemented")
-    }
-
-    override fun createInvalidationTracker(): InvalidationTracker {
-        TODO("Not yet implemented")
-    }
-
-    override fun clearAllTables() {
-        TODO("Not yet implemented")
-    }
 }
