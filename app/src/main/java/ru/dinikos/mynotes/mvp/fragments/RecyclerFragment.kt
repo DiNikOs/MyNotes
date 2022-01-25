@@ -47,7 +47,7 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport {
     ): View? {
         Log.d(TAG_RECYCLER_FRAG, "onCreateView")
         val view = inflater.inflate(R.layout.fragment_recycler_list, container, false)
-        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
+        dataPresenter = AppDatabase.getDataBase(this)?.let { DataPresenterImpl(it) }
 
         if (view is RecyclerView) {
             with(view) {

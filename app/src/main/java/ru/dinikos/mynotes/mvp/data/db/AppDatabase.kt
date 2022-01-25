@@ -30,12 +30,12 @@ abstract class AppDatabase: RoomDatabase() {
             }
         }
 
-        fun getDataBase(context: NoteFragment): AppDatabase {
-           return instanceDatabase!!
+        fun getDataBase(context: NoteFragment): AppDatabase? {
+           return instanceDatabase?.let { it }
         }
 
-        fun getDataBase(context: RecyclerFragment): AppDatabase {
-            return instanceDatabase!!
+        fun getDataBase(context: RecyclerFragment): AppDatabase? {
+            return instanceDatabase?.let { it }
         }
     }
 

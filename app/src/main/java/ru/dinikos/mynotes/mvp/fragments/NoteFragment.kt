@@ -74,7 +74,7 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
         super.onViewCreated(itemView, savedInstanceState)
         Log.d(TAG_NOTE_FRAG, "onViewCreated")
         startPresent = StartPresenter(this)
-        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
+        dataPresenter = AppDatabase.getDataBase(this)?.let { DataPresenterImpl(it) }
 
         noteTitle = itemView.findViewById(R.id.noteTitle)
         noteText = itemView.findViewById(R.id.noteText)
