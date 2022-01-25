@@ -4,10 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
-import ru.dinikos.mynotes.mvp.view.DataView
 import java.util.*
 
-class DataPresenterImpl(private val view: DataView?, private  val database: AppDatabase): DataPresenter {
+class DataPresenterImpl(private  val database: AppDatabase): DataPresenter {
 
     private var repository: RepositoryNotes = RepositoryNotes
     private var listNotes: MutableList<Note> = repository.getTestListNotes(10)

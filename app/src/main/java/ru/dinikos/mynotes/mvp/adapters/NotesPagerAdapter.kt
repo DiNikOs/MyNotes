@@ -1,7 +1,5 @@
 package ru.dinikos.mynotes.mvp.adapters
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -16,11 +14,11 @@ class NotesPagerAdapter(fragmentActivity: FragmentActivity):
             field = value
             itemIds = mutableListOf()
             for (item in items) {
-                if (item.noteId == null) {
-                    itemIds.add(-1)
-                } else {
-                    itemIds.add(item.noteId!!)
+                var id: Long? = -1
+                if (item.noteId != null) {
+                    id = item.noteId
                 }
+                id?.let { itemIds.add(it) }
             }
             notifyDataSetChanged()
         }
@@ -43,9 +41,7 @@ class NotesPagerAdapter(fragmentActivity: FragmentActivity):
      * @param position
      * @return если элемент удалён то вернётся -1
      */
-    override fun getItemId(position: Int): Long {
-        return itemIds[position]
-    }
+    override fun getItemId(position: Int) = itemIds[position]
 
     /**
      * Получение соответствия Item для перехода после удаления записи.
@@ -53,9 +49,5 @@ class NotesPagerAdapter(fragmentActivity: FragmentActivity):
      * @param itemId
      * @return
      */
-    override fun containsItem(itemId: Long): Boolean {
-        var isContains = itemIds.contains(itemId)
-        Log.d(TAG, " isContains: $isContains, itemId: $itemId")
-        return isContains
-    }
+    override fun containsItem(itemId: Long) = itemIds.contains(itemId)
 }

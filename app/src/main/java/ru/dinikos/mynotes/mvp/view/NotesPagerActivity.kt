@@ -17,18 +17,17 @@ import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.*
 import java.util.*
 
-class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
+class NotesPagerActivity : AppCompatActivity(), BaseView {
 
     private lateinit var adapter: NotesPagerAdapter
     private lateinit var viewPager: ViewPager2
 
-    private var startPresent: BasePresenter? = null
-    private var defaultPresenter: DefaultPresenter? = null
     private var dataPresenter: DataPresenter? = null
 
+
     companion object {
-        private const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
-        private const val SELECTED_POSITION = "selectedPosition"
+        const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
+        const val SELECTED_POSITION = "selectedPosition"
 
         fun startNotePagerActivity(
             context: Context,
@@ -59,9 +58,7 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
      *
      */
     private fun init() {
-        startPresent = StartPresenter(this)
-        defaultPresenter = DefaultPresentImpl(this)
-        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
+        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
         viewPager = findViewById(R.id.view_pager)
         adapter = NotesPagerAdapter(this)
         var position: Int = intent.getIntExtra(SELECTED_POSITION, -1)
@@ -132,8 +129,6 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
-        startPresent = null
-        defaultPresenter = null
     }
 
     override fun onSaveSuccessNote(note: Note) {
@@ -191,10 +186,5 @@ class NotesPagerActivity : AppCompatActivity(), BaseView, DefaultView {
      */
     private fun showToast(msg: String, text: String) =
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
-
-    override fun backToMainActivity() {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_backToMain))
-        onBackPressed()
-    }
 
 }

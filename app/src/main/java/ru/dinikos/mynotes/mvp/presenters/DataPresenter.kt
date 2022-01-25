@@ -9,7 +9,7 @@ interface DataPresenter  {
 
    fun getDates(): MutableList<Note>
 
-   suspend fun getAll(): Flow<List<Note>>
+   suspend fun getAll(): Flow<List<Note>>?
 
    suspend fun insertNote(note: Note): Long
 

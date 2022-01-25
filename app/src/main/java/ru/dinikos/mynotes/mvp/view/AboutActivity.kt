@@ -6,12 +6,8 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 
-class AboutActivity : AppCompatActivity(), DefaultView {
-
-    private var defaultPresenter: DefaultPresenter? = null
+class AboutActivity : AppCompatActivity() {
 
     private var backToStartActivity: Button? = null
 
@@ -34,10 +30,9 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      *
      */
     private fun init() {
-        defaultPresenter = DefaultPresentImpl(this)
         backToStartActivity = findViewById(R.id.backToStartActivity)
         backToStartActivity?.setOnClickListener {
-            defaultPresenter?.backToMainActivity()
+            onBackPressed()
         }
     }
 
@@ -84,15 +79,6 @@ class AboutActivity : AppCompatActivity(), DefaultView {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_destroy))
-        defaultPresenter = null
     }
 
-    /**
-     * Возврат к главному Activity
-     *
-     */
-    override fun backToMainActivity() {
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_backToMain))
-        onBackPressed()
-    }
 }

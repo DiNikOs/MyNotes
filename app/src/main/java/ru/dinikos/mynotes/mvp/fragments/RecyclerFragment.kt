@@ -18,17 +18,15 @@ import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.DataPresenter
 import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
-import ru.dinikos.mynotes.mvp.view.DataView
 
 /**
  * A fragment representing a list of Items.
  */
-class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
+class RecyclerFragment : Fragment(), ShowFragmentSupport {
 
     private lateinit var onClick: ((Note) -> Unit)
     private lateinit var onPosition: ((Int) -> Unit)
     private var dataPresenter: DataPresenter? = null
-    private var database: AppDatabase? = null
 
     companion object {
 
@@ -49,10 +47,7 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
     ): View? {
         Log.d(TAG_RECYCLER_FRAG, "onCreateView")
         val view = inflater.inflate(R.layout.fragment_recycler_list, container, false)
-        database = AppDatabase.getDataBase(this)
-        dataPresenter = DataPresenterImpl(this, AppDatabase.getDataBase(this))
-        var listNotes = dataPresenter?.getDates()
-        database?.noteDao()?.insertNotes(listNotes!!)
+        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
 
         if (view is RecyclerView) {
             with(view) {
@@ -80,26 +75,6 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport, DataView {
                 .replace(R.id.container_recycler, fragment)
                 .commit()
         }
-    }
-
-    override fun setDate(list: MutableList<Note>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getDates(): MutableList<Note> {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadAllNotes(): Flow<List<Note>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun insertNote(note: Note): Long {
-        TODO("Not yet implemented")
-    }
-
-    override fun deleteNote(note: Note) {
-        TODO("Not yet implemented")
     }
 
 }

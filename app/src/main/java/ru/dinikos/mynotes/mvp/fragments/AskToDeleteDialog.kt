@@ -11,7 +11,7 @@ class AskToDeleteDialog : DialogFragment() {
     var onDelete: (() -> Unit)? = null
 
     companion object {
-        val TAG = AskToDeleteDialog::class.java.name + " TAG"
+        const val TAG = "AskToDeleteDialog TAG"
 
         fun createInstance(onDelete: (() -> Unit)): AskToDeleteDialog {
             return AskToDeleteDialog().apply {

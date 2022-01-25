@@ -20,10 +20,9 @@ import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.BaseView
-import ru.dinikos.mynotes.mvp.view.DefaultView
 import ru.dinikos.mynotes.mvp.view.PagerView
 
-class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, PagerView {
+class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
 
     private var noteTitle: EditText? = null
     private var noteText: EditText? = null
@@ -34,7 +33,6 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
 
     private lateinit var managerFrag: FragmentManager
     private var startPresent: BasePresenter? = null
-    private var defaultPresenter: DefaultPresenter? = null
     private var dataPresenter: DataPresenter? = null
 
     companion object {
@@ -58,14 +56,12 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
     ): View? {
         Log.d(TAG_NOTE_FRAG, "onCreateView")
 
-        var view = inflater.inflate(R.layout.fragment_note, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_note, container, false)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         startPresent = null
-        defaultPresenter = null
     }
 
     /**
@@ -78,8 +74,7 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
         super.onViewCreated(itemView, savedInstanceState)
         Log.d(TAG_NOTE_FRAG, "onViewCreated")
         startPresent = StartPresenter(this)
-        defaultPresenter = DefaultPresentImpl(this)
-        dataPresenter = DataPresenterImpl(null, AppDatabase.getDataBase(this))
+        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
 
         noteTitle = itemView.findViewById(R.id.noteTitle)
         noteText = itemView.findViewById(R.id.noteText)
@@ -138,11 +133,6 @@ class NoteFragment : Fragment(), DefaultView, ShowFragmentSupport, BaseView, Pag
                 .addToBackStack(fragment.tag)
                 .commit()
         }
-    }
-
-    override fun backToMainActivity() {
-        Log.d(TAG_NOTE_FRAG, getString(R.string.msg_backToMain))
-        managerFrag.popBackStack()
     }
 
     override fun onSaveSuccessNote(note: Note) {

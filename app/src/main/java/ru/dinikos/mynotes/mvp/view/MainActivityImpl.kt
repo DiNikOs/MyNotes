@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
 import ru.dinikos.mynotes.mvp.data.db.AppDatabase
@@ -16,15 +15,13 @@ import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TAG_MAIN_VIEW
 import ru.dinikos.mynotes.mvp.view.BaseView.Companion.TYPE_SHARE
 
-
-class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView {
+class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView {
 
     private lateinit var binding: ActivityMainBinding
 
     private var startPresent: BasePresenter? = null
     private var dataPresenter: DataPresenter? = null
     private var pagerPresenter: NotesPagerPresenter? = null
-    private var database:AppDatabase? = null
 
     /**
      * Вызов при первом создании Activity
@@ -48,8 +45,7 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView
      */
     private fun init() {
         startPresent = StartPresenter(this)
-        database =  AppDatabase.getDataBase(this)
-        dataPresenter = DataPresenterImpl(this, AppDatabase.getDataBase(this))
+        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
 
         pagerPresenter = NotesPagerPresenterImpl(this)
         showRecyclerFragment()
@@ -188,26 +184,6 @@ class MainActivityImpl : AppCompatActivity(), BaseView, NotesPagerView, DataView
         }, position = {
             note?.let { it2 -> showNoteFragment(it2, it) }
         }).showFragment(supportFragmentManager)
-    }
-
-    override fun setDate(list: MutableList<Note>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getDates(): MutableList<Note> {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadAllNotes(): Flow<List<Note>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun insertNote(note: Note): Long {
-        TODO("Not yet implemented")
-    }
-
-    override fun deleteNote(note: Note) {
-        TODO("Not yet implemented")
     }
 
 }

@@ -11,7 +11,7 @@ class AskToSaveDialog: DialogFragment() {
     var onSave: (() -> Unit)? = null
 
     companion object {
-        val TAG = AskToSaveDialog::class.java.name + " TAG"
+        const val TAG = "AskToSaveDialog TAG"
 
         fun createInstance(onSave: (() -> Unit)): AskToSaveDialog {
             return AskToSaveDialog().apply {
