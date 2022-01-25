@@ -9,9 +9,6 @@ interface NoteDao {
     @Query("SELECT * FROM notes")
     fun loadAll(): Flow<List<Note>>
 
-//    @Query("SELECT * FROM notes WHERE notes.note_title LIKE :title LIMIT 1")
-//    fun findByTitleName(title: String): Note
-
     @Insert
     fun insert(note: Note): Long
 
