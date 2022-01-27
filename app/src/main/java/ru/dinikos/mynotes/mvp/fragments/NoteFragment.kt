@@ -16,13 +16,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.*
-import ru.dinikos.mynotes.mvp.view.BaseView
-import ru.dinikos.mynotes.mvp.view.PagerView
+import ru.dinikos.mynotes.mvp.view.*
 
-class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
+class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView, DataView {
 
     private var noteTitle: EditText? = null
     private var noteText: EditText? = null
@@ -32,13 +30,13 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
     private var toolbarBtnDelNote: AppCompatImageView? = null
 
     private lateinit var managerFrag: FragmentManager
-    private var startPresent: BasePresenter? = null
-    private var dataPresenter: DataPresenter? = null
+    private var notePresent: NotePresenter? = null
 
     companion object {
 
         const val TAG_NOTE_FRAG = "NoteFragment TAG"
         const val ARG_NOTE = "note"
+        const val TYPE_SHARE = "text/plain"
 
         fun newInstance(note: Note): NoteFragment {
             val fragment = NoteFragment()
@@ -55,13 +53,13 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG_NOTE_FRAG, "onCreateView")
-
+        super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_note, container, false)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        startPresent = null
+        notePresent = null
     }
 
     /**
@@ -73,8 +71,7 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
         Log.d(TAG_NOTE_FRAG, "onViewCreated")
-        startPresent = StartPresenter(this)
-        dataPresenter = AppDatabase.getDataBase(this)?.let { DataPresenterImpl(it) }
+        notePresent = NotesMenuPresenter(this)
 
         noteTitle = itemView.findViewById(R.id.noteTitle)
         noteText = itemView.findViewById(R.id.noteText)
@@ -101,19 +98,19 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
         shareDataBtn?.setOnClickListener {
             var noteTitle = noteTitle?.text.toString()
             Log.d(TAG_NOTE_FRAG, "shareDataBtn noteTitle: $noteTitle")
-            startPresent?.shareDataBtn(noteTitle, noteText?.text.toString())
+            notePresent?.shareDataBtn(noteTitle, noteText?.text.toString())
         }
 
         toolbarBtnSaveNote?.setOnClickListener {
             note.title = noteTitle?.text.toString()
             note.text = noteText?.text.toString()
             Log.d(TAG_NOTE_FRAG, " toolbarBtnSaveNote: $note")
-            startPresent?.toSaveNote(note)
+            notePresent?.toSaveNote(note)
             activity?.onContentChanged()
         }
 
         toolbarBtnDelNote?.setOnClickListener {
-            startPresent?.deleteNote(note)
+            notePresent?.deleteNote(note)
             activity?.onContentChanged()
         }
     }
@@ -148,24 +145,22 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
     }
 
     override fun onAttemptSaveBlankText(text: String) {
-        Log.d(BaseView.TAG_MAIN_VIEW, getString(R.string.msg_error_save_text))
+        Log.d(TAG_NOTE_FRAG, getString(R.string.msg_error_save_text))
         showWarningDialog()
     }
 
+    /**
+     * Отправка данных в другие сервисы
+     *
+     * @param title  заголовок заметки
+     * @param text  тест заметки
+     */
     override fun shareData(title: String, text: String) {
         Log.d(TAG_NOTE_FRAG, getString(R.string.msg_shareData) + " title:" + title)
         startActivity(Intent(Intent.ACTION_SEND).apply {
-            type = BaseView.TYPE_SHARE
+            type = TYPE_SHARE
             putExtra(Intent.EXTRA_TEXT, "$title:\n$text")
         })
-    }
-
-    override fun openAboutActivity() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getPagerData(): Note {
-        return arguments?.get(ARG_NOTE) as Note
     }
 
     private fun showWarningDialog() {
@@ -183,17 +178,7 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
     }
 
     private fun okClickedSave(note: Note) {
-        if(note.noteId == null) {
-            lifecycleScope.launch {
-                dataPresenter?.insertNote(note)
-            }
-            // возврат на главный экран со списком при сохранении новой записи.
-            activity?.onBackPressed()
-        } else {
-            lifecycleScope.launch {
-                dataPresenter?.updateNote(note)
-            }
-        }
+        dataPresenter?.insertNote(note)
         Toast.makeText(
             this.activity, getString(R.string.msg_success_ok),
             Toast.LENGTH_LONG
@@ -209,6 +194,19 @@ class NoteFragment : Fragment(), ShowFragmentSupport, BaseView, PagerView {
             lifecycleScope.launch {
                 dataPresenter?.deleteNote(note)
             }
+        }
+    }
+
+    override fun insertNote(note: Note): Long? {
+        var noteId = note.noteId
+        return if (noteId == null) {
+            noteId = dateBase?.noteDao()?.insert(note)
+            // возврат на главный экран со списком при сохранении новой записи.
+            activity?.onBackPressed()
+            noteId
+        } else {
+            updateNote(note)
+            noteId
         }
     }
 

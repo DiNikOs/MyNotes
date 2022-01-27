@@ -10,23 +10,20 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.adapters.NotesRecyclerAdapter
-import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.presenters.DataPresenter
-import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
+import ru.dinikos.mynotes.mvp.view.BaseFragment
+import ru.dinikos.mynotes.mvp.view.DataView
 
 /**
  * A fragment representing a list of Items.
  */
-class RecyclerFragment : Fragment(), ShowFragmentSupport {
+class RecyclerFragment : BaseFragment(), ShowFragmentSupport, DataView {
 
     private lateinit var onClick: ((Note) -> Unit)
     private lateinit var onPosition: ((Int) -> Unit)
-    private var dataPresenter: DataPresenter? = null
 
     companion object {
 
@@ -45,18 +42,14 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         Log.d(TAG_RECYCLER_FRAG, "onCreateView")
         val view = inflater.inflate(R.layout.fragment_recycler_list, container, false)
-        dataPresenter = AppDatabase.getDataBase(this)?.let { DataPresenterImpl(it) }
 
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                lifecycleScope.launch {
-                    dataPresenter?.getAll()?.collect {
-                        view.adapter = NotesRecyclerAdapter(it.reversed(), onClick, onPosition)
-                    }
-                }
+                onLoadAllNotes()
             }
         }
         return view
@@ -74,6 +67,15 @@ class RecyclerFragment : Fragment(), ShowFragmentSupport {
                 .beginTransaction()
                 .replace(R.id.container_recycler, fragment)
                 .commit()
+        }
+    }
+
+    override fun onLoadAllNotes() {
+        lifecycleScope.launch {
+            super.dataPresenter?.getAll()?.collect {
+                (view as RecyclerView).adapter =
+                    NotesRecyclerAdapter(it.reversed(), onClick, onPosition)
+            }
         }
     }
 

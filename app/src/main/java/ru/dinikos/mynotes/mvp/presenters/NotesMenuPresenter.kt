@@ -1,9 +1,9 @@
 package ru.dinikos.mynotes.mvp.presenters
 
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.view.BaseView
+import ru.dinikos.mynotes.mvp.view.NoteView
 
-class StartPresenter(var view: BaseView?): BasePresenter  {
+class NotesMenuPresenter(var view: NoteView?): NotePresenter {
 
     /**
      * Попытка сохраниния заметки
@@ -44,14 +44,6 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
         var textError: String = dataIsEmpty(noteTitle, editText)
         if (textError.isNotBlank()) view?.onAttemptSaveBlankText(textError)
         else view?.shareData(noteTitle, editText)
-    }
-
-    /**
-     * Обработка перехода About Activity
-     *
-     */
-    override fun operateAboutBtn() {
-        view?.openAboutActivity()
     }
 
     /**

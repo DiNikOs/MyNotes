@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.mvp.adapters.NotesPagerAdapter
@@ -17,13 +17,16 @@ import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.*
 import java.util.*
 
-class NotesPagerActivity : AppCompatActivity(), BaseView {
+class NotesPagerActivity : AppCompatActivity(), DataView {
 
     private lateinit var adapter: NotesPagerAdapter
     private lateinit var viewPager: ViewPager2
 
     private var dataPresenter: DataPresenter? = null
+    private var dateBase: AppDatabase? = null
+    private var listNotes: MutableList<Note> = mutableListOf()
 
+    private var position: Int? = -1
 
     companion object {
         const val TAG_NOTE_ACTIVITY = "NotesPagerActivity"
@@ -58,32 +61,12 @@ class NotesPagerActivity : AppCompatActivity(), BaseView {
      *
      */
     private fun init() {
-        dataPresenter = DataPresenterImpl(AppDatabase.getDataBase(this))
+        dateBase = AppDatabase.getDataBase(this)
+        dataPresenter = DataPresenterImpl(this, dateBase)
         viewPager = findViewById(R.id.view_pager)
         adapter = NotesPagerAdapter(this)
-        var position: Int = intent.getIntExtra(SELECTED_POSITION, -1)
-
-        var positionStart: Int = position
-
-        lifecycleScope.launch {
-            dataPresenter?.getAll()?.collect {
-                var list: MutableList<Note> = it.toMutableList()
-                if(position == -1) {
-                    positionStart = 0
-                    list.add(Note(
-                        null,
-                        "",
-                        "",
-                        Date().toString(),
-                        Date().toString()
-                    ))
-                }
-                list.reverse()
-                adapter.items = list
-                viewPager.adapter = adapter
-                viewPager.currentItem = positionStart
-            }
-        }
+        position = intent.getIntExtra(SELECTED_POSITION, -1)
+        onLoadAllNotes()
     }
 
     /**
@@ -131,60 +114,56 @@ class NotesPagerActivity : AppCompatActivity(), BaseView {
         Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
     }
 
-    override fun onSaveSuccessNote(note: Note) {
-        TODO("Not yet implemented")
+    override suspend fun setDate(list: MutableList<Note>) {
+        for (listNote in list) {
+            listNotes.add(listNote)
+        }
     }
 
-    override fun onDeleteNote(note: Note) {
-        TODO("Not yet implemented")
+    override fun onLoadAllNotes() {
+        lifecycleScope.launch {
+            dataPresenter?.getAll()?.collect {
+                var list: MutableList<Note> = it.toMutableList()
+                if(position == -1) {
+                    position = 0
+                    list.add(Note(
+                        null,
+                        "",
+                        "",
+                        Date().toString(),
+                        Date().toString()
+                    ))
+                }
+                list.reverse()
+                adapter.items = list
+                viewPager.adapter = adapter
+                position?.let { it -> viewPager.currentItem = it }
+            }
+        }
     }
 
-    /**
-     * Действие при не успешном сохранении
-     *
-     * @param text  текст с описанием где ошибка
-     */
-    override fun onSaveError(text: String) {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_not_success) + " title:" + text)
-        showToast(getString(R.string.msg_error_save_text), text)
+    override suspend fun loadAllNotes(): Flow<List<Note>>? {
+        return dateBase?.noteDao()?.loadAll()
     }
 
-    /**
-     * Действие при попытке сохранения пустой заметки
-     *
-     * @param text  текст с описанием где ошибка
-     */
-    override fun onAttemptSaveBlankText(text: String) {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_error_save_text))
-        showToast(getString(R.string.msg_data_blank), text)
+    override fun insertNote(note: Note): Long? {
+        return dateBase?.noteDao()?.insert(note)
     }
 
-    /**
-     * Отправка данных в другие сервисы
-     *
-     * @param title  заголовок заметки
-     * @param text  тест заметки
-     */
-    override fun shareData(title: String, text: String) {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_shareData) + " title:" + title)
-        startActivity(Intent(Intent.ACTION_SEND).apply {
-            type = BaseView.TYPE_SHARE
-            putExtra(Intent.EXTRA_TEXT, "$title:\n$text")
-        })
+    override fun insertNotes(listNote: List<Note>) {
+        dateBase?.noteDao()?.insertNotes(listNote)
     }
 
-    override fun openAboutActivity() {
-        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_openAbout))
-        startActivity(Intent(this, AboutActivity::class.java))
+    override fun updateNote(note: Note) {
+        dateBase?.noteDao()?.update(note)
     }
 
-    /**
-     * Показ тоаста
-     *
-     * @param msg  сообщение формируемое по событию
-     * @param text  текст с результатом события
-     */
-    private fun showToast(msg: String, text: String) =
-        Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
+    override fun deleteNote(note: Note) {
+        dateBase?.noteDao()?.delete(note)
+    }
+
+    override fun deleteAllNote(listNote: List<Note>) {
+        dateBase?.noteDao()?.deleteAll(listNote)
+    }
 
 }

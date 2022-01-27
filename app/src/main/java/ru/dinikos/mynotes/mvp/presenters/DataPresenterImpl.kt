@@ -3,47 +3,42 @@ package ru.dinikos.mynotes.mvp.presenters
 import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
+import ru.dinikos.mynotes.mvp.view.DataView
 import java.util.*
 
-class DataPresenterImpl(private  val database: AppDatabase): DataPresenter {
+class DataPresenterImpl(private val view: DataView?, private  val database: AppDatabase?): DataPresenter {
 
-    private var repository: RepositoryNotes = RepositoryNotes
-    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
-
-    override fun setDates(list: MutableList<Note>) {
-        for (listNote in list) {
-            listNotes.add(listNote)
-        }
+    override suspend fun setDates(list: MutableList<Note>) {
+        view?.setDate(list)
     }
 
-    override fun getDates(): MutableList<Note> {
-        return listNotes
+    override fun getDates() {
+        view?.onLoadAllNotes()
     }
 
-    override suspend fun getAll(): Flow<List<Note>> {
-        return database.noteDao().loadAll()
+    override suspend fun getAll(): Flow<List<Note>>? {
+        return view?.loadAllNotes()
     }
 
-    override suspend fun insertNote(note: Note): Long {
-        return database.noteDao().insert(note)
+    override fun insertNote(note: Note): Long? {
+        return view?.insertNote(note)
     }
 
     override suspend fun insertNotes(listNote: List<Note>) {
-        return database.noteDao().insertNotes(listNote)
+        view?.insertNotes(listNote)
     }
 
     override suspend fun updateNote(note: Note) {
         note.changeDate = Date().toString()
-        return database.noteDao().update(note)
+        view?.updateNote(note)
     }
 
     override fun deleteNote(note: Note) {
-        database.noteDao().delete(note)
+       view?.deleteNote(note)
     }
 
     override fun deleteAllNote(listNote: List<Note>) {
-        database.noteDao().deleteAll(listNote)
+        view?.deleteAllNote(listNote)
     }
 
 }

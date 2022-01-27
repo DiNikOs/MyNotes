@@ -11,6 +11,10 @@ class AboutActivity : AppCompatActivity() {
 
     private var backToStartActivity: Button? = null
 
+    companion object {
+        const val TAG_ABOUT = "AboutView"
+    }
+
     /**
      * Вызов при первом создании AboutActivity
      *
@@ -42,7 +46,7 @@ class AboutActivity : AppCompatActivity() {
      */
     override fun onStart() {
         super.onStart()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_start))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_start))
     }
 
     /**
@@ -51,7 +55,7 @@ class AboutActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_resume))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_resume))
     }
 
     /**
@@ -60,7 +64,7 @@ class AboutActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_pause))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_pause))
     }
 
     /**
@@ -69,7 +73,7 @@ class AboutActivity : AppCompatActivity() {
      */
     override fun onStop() {
         super.onStop()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_stop))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_stop))
     }
 
     /**
@@ -78,7 +82,7 @@ class AboutActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_destroy))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_destroy))
     }
 
 }
