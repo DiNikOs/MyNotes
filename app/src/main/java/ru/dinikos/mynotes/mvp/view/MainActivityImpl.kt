@@ -16,12 +16,13 @@ import ru.dinikos.mynotes.mvp.presenters.*
 
 import ru.dinikos.mynotes.mvp.view.MainView.Companion.TAG_MAIN_VIEW
 
-class MainActivityImpl : AppCompatActivity(), MainView {
+class MainActivityImpl : AppCompatActivity(), MainView, DataView {
 
     private lateinit var binding: ActivityMainBinding
 
     private var mainPresent: MainPresenter? = null
-    private var dateBase: AppDatabase? = null
+    private var dataPresenter: DataPresenter? = null
+    private var dataBase: AppDatabase? = null
     private var repository: RepositoryNotes = RepositoryNotes
     private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
 
@@ -46,8 +47,9 @@ class MainActivityImpl : AppCompatActivity(), MainView {
      *
      */
     private fun init() {
-        dateBase = AppDatabase.getDataBase(this)
-        dateBase?.noteDao()?.insertNotes(listNotes)
+        dataBase = AppDatabase.getDataBase(this)
+        dataBase?.let { dataPresenter = DataPresenterImpl(this, it) }
+        dataPresenter?.onLoadAllNotes()
         mainPresent = MainMenuPresenter(this)
         showRecyclerFragment()
         binding.toolbarBtnAbout.setOnClickListener {
@@ -142,6 +144,10 @@ class MainActivityImpl : AppCompatActivity(), MainView {
         }, position = {
             note?.let { it2 -> showNoteFragment(it2, it) }
         }).showFragment(supportFragmentManager)
+    }
+
+    override fun onLoadAllNotes() {
+        dataPresenter?.insertNotes(listNotes)
     }
 
 }

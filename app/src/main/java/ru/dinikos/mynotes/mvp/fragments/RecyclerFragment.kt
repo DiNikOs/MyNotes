@@ -20,7 +20,7 @@ import ru.dinikos.mynotes.mvp.view.DataView
 /**
  * A fragment representing a list of Items.
  */
-class RecyclerFragment : BaseFragment(), ShowFragmentSupport, DataView {
+class RecyclerFragment : BaseFragment(), ShowFragmentSupport {
 
     private lateinit var onClick: ((Note) -> Unit)
     private lateinit var onPosition: ((Int) -> Unit)
@@ -49,7 +49,7 @@ class RecyclerFragment : BaseFragment(), ShowFragmentSupport, DataView {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                onLoadAllNotes()
+                super.dataPresenter?.onLoadAllNotes()
             }
         }
         return view

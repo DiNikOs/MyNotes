@@ -20,7 +20,7 @@ import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.*
 
-class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView, DataView {
+class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView {
 
     private var noteTitle: EditText? = null
     private var noteText: EditText? = null
@@ -141,7 +141,8 @@ class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView, DataView {
     }
 
     override fun onSaveError(text: String) {
-        TODO("Not yet implemented")
+        Log.d(TAG_NOTE_FRAG, getString(R.string.msg_error_save_text))
+        showWarningDialog()
     }
 
     override fun onAttemptSaveBlankText(text: String) {
@@ -178,7 +179,13 @@ class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView, DataView {
     }
 
     private fun okClickedSave(note: Note) {
-        dataPresenter?.insertNote(note)
+        if (note.noteId == null) {
+            dataPresenter?.insertNote(note)
+            // возврат на главный экран со списком при сохранении новой записи.
+            activity?.onBackPressed()
+        } else {
+            dataPresenter?.updateNote(note)
+        }
         Toast.makeText(
             this.activity, getString(R.string.msg_success_ok),
             Toast.LENGTH_LONG
@@ -187,26 +194,11 @@ class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView, DataView {
 
     private fun okClickedDelete(note: Note) {
         if(note.noteId != null) {
+            dataPresenter?.deleteNote(note)
             Toast.makeText(
                 this.activity, getString(R.string.msg_delete_success_ok),
                 Toast.LENGTH_LONG
             ).show()
-            lifecycleScope.launch {
-                dataPresenter?.deleteNote(note)
-            }
-        }
-    }
-
-    override fun insertNote(note: Note): Long? {
-        var noteId = note.noteId
-        return if (noteId == null) {
-            noteId = dateBase?.noteDao()?.insert(note)
-            // возврат на главный экран со списком при сохранении новой записи.
-            activity?.onBackPressed()
-            noteId
-        } else {
-            updateNote(note)
-            noteId
         }
     }
 

@@ -5,17 +5,15 @@ import ru.dinikos.mynotes.mvp.data.entities.Note
 
 interface DataPresenter  {
 
-   suspend fun setDates(list: MutableList<Note>)
-
-   fun getDates()
+   fun onLoadAllNotes()
 
    suspend fun getAll(): Flow<List<Note>>?
 
    fun insertNote(note: Note): Long?
 
-   suspend fun insertNotes(listNote: List<Note>)
+   fun insertNotes(listNote: List<Note>)
 
-   suspend fun updateNote(note: Note)
+   fun updateNote(note: Note)
 
    fun deleteNote(note: Note)
 

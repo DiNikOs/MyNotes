@@ -23,8 +23,7 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
     private lateinit var viewPager: ViewPager2
 
     private var dataPresenter: DataPresenter? = null
-    private var dateBase: AppDatabase? = null
-    private var listNotes: MutableList<Note> = mutableListOf()
+    private var dataBase: AppDatabase? = null
 
     private var position: Int? = -1
 
@@ -61,12 +60,12 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
      *
      */
     private fun init() {
-        dateBase = AppDatabase.getDataBase(this)
-        dataPresenter = DataPresenterImpl(this, dateBase)
+        dataBase = AppDatabase.getDataBase(this)
+        dataBase?.let { dataPresenter = DataPresenterImpl(this, it) }
         viewPager = findViewById(R.id.view_pager)
         adapter = NotesPagerAdapter(this)
         position = intent.getIntExtra(SELECTED_POSITION, -1)
-        onLoadAllNotes()
+        dataPresenter?.onLoadAllNotes()
     }
 
     /**
@@ -114,12 +113,6 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
         Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
     }
 
-    override suspend fun setDate(list: MutableList<Note>) {
-        for (listNote in list) {
-            listNotes.add(listNote)
-        }
-    }
-
     override fun onLoadAllNotes() {
         lifecycleScope.launch {
             dataPresenter?.getAll()?.collect {
@@ -140,30 +133,6 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
                 position?.let { it -> viewPager.currentItem = it }
             }
         }
-    }
-
-    override suspend fun loadAllNotes(): Flow<List<Note>>? {
-        return dateBase?.noteDao()?.loadAll()
-    }
-
-    override fun insertNote(note: Note): Long? {
-        return dateBase?.noteDao()?.insert(note)
-    }
-
-    override fun insertNotes(listNote: List<Note>) {
-        dateBase?.noteDao()?.insertNotes(listNote)
-    }
-
-    override fun updateNote(note: Note) {
-        dateBase?.noteDao()?.update(note)
-    }
-
-    override fun deleteNote(note: Note) {
-        dateBase?.noteDao()?.delete(note)
-    }
-
-    override fun deleteAllNote(listNote: List<Note>) {
-        dateBase?.noteDao()?.deleteAll(listNote)
     }
 
 }
