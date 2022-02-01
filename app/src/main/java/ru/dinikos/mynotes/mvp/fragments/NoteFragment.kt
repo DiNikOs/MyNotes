@@ -63,6 +63,7 @@ class NoteFragment : Fragment(), ShowFragmentSupport, NoteView, DataView {
     override fun onDestroyView() {
         super.onDestroyView()
         notePresent = null
+        dataPresenter = null
     }
 
     /**

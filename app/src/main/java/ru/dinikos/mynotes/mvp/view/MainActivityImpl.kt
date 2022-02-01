@@ -106,6 +106,7 @@ class MainActivityImpl : AppCompatActivity(), MainView, DataView {
         super.onDestroy()
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_on_destroy))
         mainPresent = null
+        dataPresenter = null
     }
 
     override fun openAboutActivity() {

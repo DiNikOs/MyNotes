@@ -63,6 +63,11 @@ class RecyclerFragment: Fragment(), ShowFragmentSupport, DataView {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dataPresenter = null
+    }
+
     /**
      * Замещает новыми значениями фрагмент
      *

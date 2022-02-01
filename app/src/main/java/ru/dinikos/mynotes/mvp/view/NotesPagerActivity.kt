@@ -110,6 +110,7 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
      */
     override fun onDestroy() {
         super.onDestroy()
+        dataPresenter = null
         Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
     }
 
