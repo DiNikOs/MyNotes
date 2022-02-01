@@ -2,12 +2,8 @@ package ru.dinikos.mynotes.mvp.data.db
 
 import android.content.Context
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteOpenHelper
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.data.repositories.NoteDao
-import ru.dinikos.mynotes.mvp.fragments.NoteFragment
-import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
-import ru.dinikos.mynotes.mvp.view.BaseFragment
 
 @Database(entities = [Note::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
@@ -29,10 +25,6 @@ abstract class AppDatabase: RoomDatabase() {
                 instanceDatabase = instance
                 instance
             }
-        }
-
-        fun getDataBase(baseFragment: BaseFragment): AppDatabase? {
-            return instanceDatabase?.let { it }
         }
     }
 }

@@ -7,7 +7,9 @@ interface DataPresenter  {
 
    fun onLoadAllNotes()
 
-   suspend fun getAll(): Flow<List<Note>>?
+   fun onLoadTestDates()
+
+   fun getAll(): Flow<List<Note>>?
 
    fun insertNote(note: Note): Long?
 

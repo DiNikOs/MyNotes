@@ -113,9 +113,9 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
         Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_on_destroy))
     }
 
-    override fun onLoadAllNotes() {
+    override fun onLoadAllNotes(notes: Flow<List<Note>>) {
         lifecycleScope.launch {
-            dataPresenter?.getAll()?.collect {
+            notes?.collect {
                 var list: MutableList<Note> = it.toMutableList()
                 if(position == -1) {
                     position = 0
@@ -133,6 +133,10 @@ class NotesPagerActivity : AppCompatActivity(), DataView {
                 position?.let { it -> viewPager.currentItem = it }
             }
         }
+    }
+
+    override fun onLoadTestDates(list: List<Note>) {
+        Log.d(TAG_NOTE_ACTIVITY, getString(R.string.msg_load_test_notes))
     }
 
 }

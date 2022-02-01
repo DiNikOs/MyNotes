@@ -33,6 +33,8 @@
     <string name="msg_openPagerView">Intent openPagerView</string>
     <string name="msg_backToMain">Intent mainActivity</string>
     <string name="msg_intent_frag">Intent Fragment</string>
+    <string name="msg_load_notes">Load All Notes</string>
+    <string name="msg_load_test_notes">Load Test Dates</string>
 
     <!--Strings used for for Share Btn-->
     <string name="prompt_share_btn">Share</string>

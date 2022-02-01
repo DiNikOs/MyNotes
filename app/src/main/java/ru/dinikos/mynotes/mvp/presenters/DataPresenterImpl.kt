@@ -3,16 +3,24 @@ package ru.dinikos.mynotes.mvp.presenters
 import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
+import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.view.DataView
 import java.util.*
 
 class DataPresenterImpl(private val view: DataView?, private  val database: AppDatabase): DataPresenter {
 
+    private var repository: RepositoryNotes = RepositoryNotes
+    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
+
     override fun onLoadAllNotes() {
-        view?.onLoadAllNotes()
+        view?.onLoadAllNotes(getAll())
     }
 
-    override suspend fun getAll(): Flow<List<Note>> {
+    override fun onLoadTestDates() {
+       view?.onLoadTestDates(listNotes)
+    }
+
+    override fun getAll(): Flow<List<Note>> {
         return database.noteDao().loadAll()
     }
 

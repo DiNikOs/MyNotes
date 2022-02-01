@@ -13,14 +13,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import ru.dinikos.mynotes.R
+import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
 import ru.dinikos.mynotes.mvp.presenters.*
 import ru.dinikos.mynotes.mvp.view.*
 
-class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView {
+class NoteFragment : Fragment(), ShowFragmentSupport, NoteView, DataView {
 
     private var noteTitle: EditText? = null
     private var noteText: EditText? = null
@@ -28,6 +28,8 @@ class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView {
     private var shareDataBtn: AppCompatImageView? = null
     private var toolbarBtnSaveNote: AppCompatImageView? = null
     private var toolbarBtnDelNote: AppCompatImageView? = null
+    var dataPresenter: DataPresenter? = null
+    var dataBase: AppDatabase? = null
 
     private lateinit var managerFrag: FragmentManager
     private var notePresent: NotePresenter? = null
@@ -53,7 +55,8 @@ class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG_NOTE_FRAG, "onCreateView")
-        super.onCreateView(inflater, container, savedInstanceState)
+        dataBase = AppDatabase.getDataBase(inflater.context)
+        dataBase?.let { dataPresenter = DataPresenterImpl(this, it) }
         return inflater.inflate(R.layout.fragment_note, container, false)
     }
 
@@ -200,6 +203,14 @@ class NoteFragment : BaseFragment(), ShowFragmentSupport, NoteView {
                 Toast.LENGTH_LONG
             ).show()
         }
+    }
+
+    override fun onLoadAllNotes(notes: Flow<List<Note>>) {
+        Log.d(TAG_NOTE_FRAG, getString(R.string.msg_load_notes))
+    }
+
+    override fun onLoadTestDates(list: List<Note>) {
+        Log.d(TAG_NOTE_FRAG, getString(R.string.msg_load_test_notes))
     }
 
 }

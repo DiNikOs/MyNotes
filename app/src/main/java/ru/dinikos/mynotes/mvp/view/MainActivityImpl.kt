@@ -6,14 +6,18 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import ru.dinikos.mynotes.R
 import ru.dinikos.mynotes.databinding.ActivityMainBinding
 import ru.dinikos.mynotes.mvp.data.db.AppDatabase
 import ru.dinikos.mynotes.mvp.data.entities.Note
-import ru.dinikos.mynotes.mvp.data.repositories.RepositoryNotes
 import ru.dinikos.mynotes.mvp.fragments.RecyclerFragment
-import ru.dinikos.mynotes.mvp.presenters.*
-
+import ru.dinikos.mynotes.mvp.presenters.DataPresenter
+import ru.dinikos.mynotes.mvp.presenters.DataPresenterImpl
+import ru.dinikos.mynotes.mvp.presenters.MainMenuPresenter
+import ru.dinikos.mynotes.mvp.presenters.MainPresenter
 import ru.dinikos.mynotes.mvp.view.MainView.Companion.TAG_MAIN_VIEW
 
 class MainActivityImpl : AppCompatActivity(), MainView, DataView {
@@ -23,8 +27,6 @@ class MainActivityImpl : AppCompatActivity(), MainView, DataView {
     private var mainPresent: MainPresenter? = null
     private var dataPresenter: DataPresenter? = null
     private var dataBase: AppDatabase? = null
-    private var repository: RepositoryNotes = RepositoryNotes
-    private var listNotes: MutableList<Note> = repository.getTestListNotes(10)
 
     /**
      * Вызов при первом создании Activity
@@ -49,7 +51,7 @@ class MainActivityImpl : AppCompatActivity(), MainView, DataView {
     private fun init() {
         dataBase = AppDatabase.getDataBase(this)
         dataBase?.let { dataPresenter = DataPresenterImpl(this, it) }
-        dataPresenter?.onLoadAllNotes()
+        dataPresenter?.onLoadTestDates()
         mainPresent = MainMenuPresenter(this)
         showRecyclerFragment()
         binding.toolbarBtnAbout.setOnClickListener {
@@ -132,13 +134,13 @@ class MainActivityImpl : AppCompatActivity(), MainView, DataView {
         Toast.makeText(this, "$msg:$text", Toast.LENGTH_LONG).show()
 
 
-    private fun showNoteFragment(note: Note, position:Int) {
+    private fun showNoteFragment(note: Note, position: Int) {
         Log.d(TAG_MAIN_VIEW, getString(R.string.msg_intent_frag) + " - note: $note")
         openPagerViewActivity(note, position)
     }
 
     private fun showRecyclerFragment() {
-        var note:Note? = null
+        var note: Note? = null
         RecyclerFragment.newInstance(onItemClick = {
             note = it
         }, position = {
@@ -146,8 +148,16 @@ class MainActivityImpl : AppCompatActivity(), MainView, DataView {
         }).showFragment(supportFragmentManager)
     }
 
-    override fun onLoadAllNotes() {
-        dataPresenter?.insertNotes(listNotes)
+    override fun onLoadAllNotes(notes: Flow<List<Note>>) {
+        lifecycleScope.launch {
+            notes?.collect {
+                Log.d(TAG_MAIN_VIEW, getString(R.string.msg_load_notes) + " - notes: ${it.count()}")
+            }
+        }
+    }
+
+    override fun onLoadTestDates(notes: List<Note>) {
+        dataPresenter?.insertNotes(notes)
     }
 
 }
