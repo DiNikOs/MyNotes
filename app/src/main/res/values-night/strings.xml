@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toolbar_add">Добавить</string>
+    <string name="toolbar_about">Об приложении</string>
+    <string name="toolbar_save">Сохранить</string>
+    <string name="toolbar_share">Передать</string>
+    <string name="toolbar_delete">Удалить</string>
+</resources>

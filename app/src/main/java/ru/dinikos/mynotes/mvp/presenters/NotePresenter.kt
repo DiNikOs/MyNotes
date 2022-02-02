@@ -2,11 +2,7 @@ package ru.dinikos.mynotes.mvp.presenters
 
 import ru.dinikos.mynotes.mvp.data.entities.Note
 
-interface BasePresenter {
-
-    companion object {
-        const val TAG_FIRST_PRESENT = "FirstPresent"
-    }
+interface NotePresenter {
 
     fun toSaveNote(note: Note)
 
@@ -15,7 +11,4 @@ interface BasePresenter {
     fun saveNote(note: Note)
 
     fun shareDataBtn(noteTitle: String, editText: String)
-
-    fun operateAboutBtn()
-
 }
