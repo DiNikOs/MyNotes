@@ -1,6 +1,6 @@
 package ru.dinikos.mynotes.mvp.data.repositories
 
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 import java.util.*
 
 object RepositoryNotes {
@@ -22,7 +22,7 @@ object RepositoryNotes {
     fun getTestListNotes(size: Int) : MutableList<Note> {
         val result = mutableListOf<Note>()
         for (inx in 1..size) {
-            result.add(Note(inx.toLong(), "title$inx", "text$inx", Date(), Date() ))
+            result.add(Note(inx.toLong(), "title$inx", "text$inx", Date().toString(), Date().toString() ))
         }
         return result
     }

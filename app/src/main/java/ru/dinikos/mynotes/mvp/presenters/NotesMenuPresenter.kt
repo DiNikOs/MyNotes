@@ -1,29 +1,37 @@
 package ru.dinikos.mynotes.mvp.presenters
 
-import ru.dinikos.mynotes.mvp.view.BaseView
+import ru.dinikos.mynotes.mvp.data.entities.Note
+import ru.dinikos.mynotes.mvp.view.NoteView
 
-class StartPresenter(var view: BaseView?): BasePresenter  {
+class NotesMenuPresenter(var view: NoteView?): NotePresenter {
 
     /**
      * Попытка сохраниния заметки
      *
-     * @param title  заголовок заметки
-     * @param text  тест заметки
+     * @param note  заметка на сохранение
      */
-    override fun toSaveText(title: String, text: String) {
-        var textError: String = dataIsEmpty(title, text)
+    override fun toSaveNote(note: Note) {
+        var textError: String = dataIsEmpty(note.title, note.text)
         if (textError.isNotBlank()) view?.onAttemptSaveBlankText(textError)
-        else saveText(title, text)
+        else saveNote(note)
     }
 
     /**
-     * Успешное действие с заметкой
+     * Успешное сохранение заметки
      *
-     * @param title  заголовок заметки
-     * @param text  тест заметки
+     * @param note заметка для сохранения
      */
-    override fun saveText(title: String, text: String) {
-        view?.onSaveSuccess(title, text)
+    override fun saveNote(note:Note) {
+        view?.onSaveSuccessNote(note)
+    }
+
+    /**
+     * Удаление заметки
+     *
+     * @param note заметка для удаления
+     */
+    override fun deleteNote(note:Note) {
+        view?.onDeleteNote(note)
     }
 
     /**
@@ -36,14 +44,6 @@ class StartPresenter(var view: BaseView?): BasePresenter  {
         var textError: String = dataIsEmpty(noteTitle, editText)
         if (textError.isNotBlank()) view?.onAttemptSaveBlankText(textError)
         else view?.shareData(noteTitle, editText)
-    }
-
-    /**
-     * Обработка перехода About Activity
-     *
-     */
-    override fun operateAboutBtn() {
-        view?.openAboutActivity()
     }
 
     /**

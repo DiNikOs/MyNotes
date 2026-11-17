@@ -1,4 +1,4 @@
-package ru.dinikos.mynotes.mvp
+package ru.dinikos.mynotes.mvp.data.model
 
 sealed class Result<out T : Any> {
 

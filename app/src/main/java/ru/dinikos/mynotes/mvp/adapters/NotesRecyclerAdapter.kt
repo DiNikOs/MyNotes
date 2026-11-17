@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.entities.Note
+import ru.dinikos.mynotes.mvp.data.entities.Note
 
 class NotesRecyclerAdapter(
     val listNotes: List<Note>,
-    var onItemClick: ((Note) -> Unit)? = null
+    var onItemClick: ((Note) -> Unit)? = null,
+    var onPosition: ((Int) -> Unit)? = null
 ) : RecyclerView.Adapter<NotesRecyclerAdapter.NotesViewHolder>() {
 
     override fun getItemCount(): Int = listNotes.count()
@@ -38,6 +39,7 @@ class NotesRecyclerAdapter(
                 var position = adapterPosition
                 Log.d("RecyclerAdapter",  " [adapterPosition: $position ]")
                 onItemClick?.invoke(note)
+                onPosition?.invoke(position)
             }
         }
     }

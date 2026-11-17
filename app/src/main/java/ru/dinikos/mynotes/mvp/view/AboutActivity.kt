@@ -1,26 +1,29 @@
 package ru.dinikos.mynotes.mvp.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import ru.dinikos.mynotes.R
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresentImpl
-import ru.dinikos.mynotes.mvp.presenters.DefaultPresenter
 
-class AboutActivity : AppCompatActivity(), DefaultView {
-
-    private var defaultPresenter: DefaultPresenter? = null
+class AboutActivity : AppCompatActivity() {
 
     private var backToStartActivity: Button? = null
 
-            /**
+    companion object {
+        const val TAG_ABOUT = "AboutView"
+    }
+
+    /**
      * Вызов при первом создании AboutActivity
      *
      * @param savedInstanceState  контекст для работы с Activity(ключ-значение)
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         init()
@@ -31,10 +34,9 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      *
      */
     private fun init() {
-        defaultPresenter = DefaultPresentImpl(this)
         backToStartActivity = findViewById(R.id.backToStartActivity)
         backToStartActivity?.setOnClickListener {
-            defaultPresenter?.backToMainActivity()
+            onBackPressed()
         }
     }
 
@@ -44,7 +46,7 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     override fun onStart() {
         super.onStart()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_start))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_start))
     }
 
     /**
@@ -53,7 +55,7 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     override fun onResume() {
         super.onResume()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_resume))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_resume))
     }
 
     /**
@@ -62,7 +64,7 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     override fun onPause() {
         super.onPause()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_pause))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_pause))
     }
 
     /**
@@ -71,7 +73,7 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     override fun onStop() {
         super.onStop()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_stop))
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_stop))
     }
 
     /**
@@ -80,16 +82,7 @@ class AboutActivity : AppCompatActivity(), DefaultView {
      */
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_on_destroy))
-        defaultPresenter = null
+        Log.d(TAG_ABOUT, getString(R.string.msg_on_destroy))
     }
 
-    /**
-     * Возврат к главному Activity
-     *
-     */
-    override fun backToMainActivity() {
-        Log.d(BaseView.TAG_ABOUT, getString(R.string.msg_backToMain))
-        startActivity(Intent(this, MainActivityImpl::class.java))
-    }
 }
